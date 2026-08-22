@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>El Taconazo - Punto de Venta</title>
+
+<style>
+*{box-sizing:border-box}
+
+body{
+margin:0;
+font-family:Arial,sans-serif;
+background:#fff;
+color:#111;
+}
+
+header{
+background:#e60000;
+color:#ffd900;
+text-align:center;
+padding:22px 10px;
+font-size:28px;
+font-weight:bold;
+border-bottom:7px solid #ffd900;
+}
+
+main{
+max-width:700px;
+margin:auto;
+padding:18px;
+}
+
+h2{
+background:#111;
+color:#ffd900;
+padding:13px;
+border-radius:12px;
+margin:18px 0 12px;
+font-size:24px;
+}
+
+.productos{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:14px;
+}
+
+.prod{
+background:white;
+border:4px solid #e60000;
+border-radius:16px;
+padding:18px 10px;
+text-align:center;
+box-shadow:0 3px 8px #bbb;
+}
+
+.prod b{
+display:block;
+font-size:22px;
+margin-bottom:7px;
+}
+
+.precio{
+font-size:20px;
+font-weight:bold;
+color:#e60000;
+margin-bottom:14px;
+}
+
+.cantidad{
+display:flex;
+justify-content:center;
+align-items:center;
+gap:16px;
+}
+
+.cantidad button{
+border:0;
+border-radius:10px;
+background:#ffd900;
+color:#111;
+font-size:25px;
+font-weight:bold;
+width:52px;
+height:48px;
+}
+
+.cantidad span{
+font-size:25px;
+font-weight:bold;
+min-width:25px;
+}
+
+#orden{
+margin-top:25px;
+background:#fff;
+border:5px solid #111;
+border-radius:16px;
+padding:16px;
+}
+
+#orden h2{
+margin-top:0;
+}
+
+.item{
+display:flex;
+justify-content:space-between;
+padding:11px 3px;
+border-bottom:2px solid #ddd;
+font-size:18px;
+}
+
+.total{
+text-align:right;
+font-size:27px;
+font-weight:bold;
+margin-top:18px;
+color:#e60000;
+}
+
+.enviar,.vaciar{
+width:100%;
+border:0;
+border-radius:12px;
+padding:18px;
+margin-top:14px;
+font-size:20px;
+font-weight:bold;
+}
+
+.enviar{
+background:#e60000;
+color:white;
+}
+
+.vaciar{
+background:#ffd900;
+color:#111;
+}
+
+@media(max-width:480px){
+.productos{
+grid-template-columns:1fr;
+}
+
+header{
+font-size:25px;
+}
+
+h2{
+font-size:22px;
+}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+EL TACONAZO<br>
+PUNTO DE VENTA
+</header>
+
+<main>
+
+<h2>🌮 TACOS — $17</h2>
+
+<div class="productos">
+
+<div class="prod">
+<b>Pastor</b>
+<div class="precio">$17</div>
+
+<div class="cantidad">
+<button onclick="cambiar('tacoPastor',-1)">−</button>
+<span id="tacoPastor">0</span>
+<button onclick="cambiar('tacoPastor',1)">+</button>
+</div>
+</div>
+
+<div class="prod">
+<b>Birria de res</b>
+<div class="precio">$17</div>
+
+<div class="cantidad">
+<button onclick="cambiar('tacoBirria',-1)">−</button>
+<span id="tacoBirria">0</span>
+<button onclick="cambiar('tacoBirria',1)">+</button>
+</div>
+</div>
+
+</div>
+
+<h2>🥪 TORTAS — $45</h2>
+
+<div class="productos">
+
+<div class="prod">
+<b>Pastor</b>
+<div class="precio">$45</div>
+
+<div class="cantidad">
+<button onclick="cambiar('tortaPastor',-1)">−</button>
+<span id="tortaPastor">0</span>
+<button onclick="cambiar('tortaPastor',1)">+</button>
+</div>
+</div>
+
+<div class="prod">
+<b>Birria de res</b>
+<div class="precio">$45</div>
+
+<div class="cantidad">
+<button onclick="cambiar('tortaBirria',-1)">−</button>
+<span id="tortaBirria">0</span>
+<button onclick="cambiar('tortaBirria',1)">+</button>
+</div>
+</div>
+
+</div>
+
+<div id="orden">
+
+<h2>PEDIDO</h2>
+
+<div id="lista">
+No hay productos.
+</div>
+
+<div class="total">
+TOTAL: $<span id="total">0</span>
+</div>
+
+<button class="enviar" onclick="enviar()">
+ENVIAR PEDIDO
+</button>
+
+<button class="vaciar" onclick="vaciar()">
+VACIAR
+</button>
+
+</div>
+
+</main>
+
+<script>
+
+const productos={
+tacoPastor:{nombre:"Taco de pastor",precio:17},
+tacoBirria:{nombre:"Taco de birria de res",precio:17},
+tortaPastor:{nombre:"Torta de pastor",precio:45},
+tortaBirria:{nombre:"Torta de birria de res",precio:45}
+};
+
+let cantidades={
+tacoPastor:0,
+tacoBirria:0,
+tortaPastor:0,
+tortaBirria:0
+};
+
+function cambiar(id,n){
+
+cantidades[id]=Math.max(0,cantidades[id]+n);
+
+document.getElementById(id).textContent=cantidades[id];
+
+mostrar();
+}
+
+function mostrar(){
+
+let lista="";
+let total=0;
+
+for(let id in cantidades){
+
+if(cantidades[id]>0){
+
+let subtotal=
+cantidades[id]*productos[id].precio;
+
+total+=subtotal;
+
+lista+=`
+<div class="item">
+<span>${cantidades[id]} × ${productos[id].nombre}</span>
+<strong>$${subtotal}</strong>
+</div>
+`;
+}
+}
+
+document.getElementById("lista").innerHTML=
+lista||"No hay productos.";
+
+document.getElementById("total").textContent=total;
+}
+
+function vaciar(){
+
+for(let id in cantidades){
+
+cantidades[id]=0;
+
+document.getElementById(id).textContent=0;
+}
+
+mostrar();
+}
+
+function enviar(){
+
+let pedido=[];
+
+for(let id in cantidades){
+
+if(cantidades[id]>0){
+
+pedido.push({
+producto:productos[id].nombre,
+cantidad:cantidades[id]
+});
+
+}
+}
+
+if(!pedido.length){
+
+alert("Agrega al menos un producto.");
+
+return;
+}
+
+alert("Pedido preparado.");
+
+}
+
+</script>
+
+</body>
+  </html>
