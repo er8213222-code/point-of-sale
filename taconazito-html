@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>El Taconazo - Taller</title>
+
+<style>
+*{box-sizing:border-box}
+
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#080808;
+    color:#fff;
+}
+
+header{
+    background:#000;
+    color:#ffd400;
+    text-align:center;
+    padding:18px;
+    font-size:30px;
+    font-weight:900;
+    border-bottom:2px solid #ffd400;
+}
+
+.contenedor{
+    max-width:900px;
+    margin:auto;
+    padding:15px;
+}
+
+.tipo{
+    display:flex;
+    gap:10px;
+    margin-bottom:15px;
+}
+
+.tipo button{
+    flex:1;
+    padding:16px;
+    border:2px solid #333;
+    border-radius:12px;
+    background:#151515;
+    color:#fff;
+    font-size:20px;
+    font-weight:900;
+}
+
+.tipo button.activo{
+    background:#ffd400;
+    color:#000;
+    border-color:#ffd400;
+}
+
+.mesa{
+    background:#151515;
+    padding:16px;
+    border-radius:15px;
+    margin-bottom:18px;
+    border:1px solid #292929;
+}
+
+.mesa label{
+    display:block;
+    font-size:19px;
+    font-weight:900;
+    margin-bottom:8px;
+}
+
+.mesa input{
+    width:100%;
+    padding:14px;
+    background:#000;
+    color:#fff;
+    border:2px solid #555;
+    border-radius:10px;
+    font-size:24px;
+    font-weight:900;
+}
+
+h2{
+    font-size:24px;
+    margin:22px 0 10px;
+    color:#ffd400;
+}
+
+.producto{
+    background:#151515;
+    border:1px solid #292929;
+    border-radius:15px;
+    padding:15px;
+    margin-bottom:12px;
+}
+
+.producto-cabecera{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+}
+
+.nombre{
+    font-size:23px;
+    font-weight:900;
+}
+
+.cantidad{
+    width:110px;
+    padding:11px;
+    background:#000;
+    color:#fff;
+    border:2px solid #555;
+    border-radius:10px;
+    font-size:23px;
+    font-weight:900;
+    text-align:center;
+}
+
+.modificaciones{
+    display:none;
+    margin-top:12px;
+    padding-top:12px;
+    border-top:1px solid #333;
+    gap:8px;
+    flex-wrap:wrap;
+}
+
+.modificaciones button{
+    padding:11px 14px;
+    border:2px solid #555;
+    border-radius:9px;
+    background:#111;
+    color:#fff;
+    font-weight:900;
+}
+
+.modificaciones button.seleccionado{
+    background:#ffd400;
+    color:#000;
+    border-color:#ffd400;
+}
+
+.resumen{
+    background:#000;
+    border:2px solid #ffd400;
+    border-radius:15px;
+    padding:18px;
+    margin-top:20px;
+}
+
+.resumen-titulo{
+    color:#ffd400;
+    font-size:24px;
+    font-weight:900;
+    margin-bottom:8px;
+}
+
+#listaPedido{
+    font-size:20px;
+    line-height:1.7;
+}
+
+.total{
+    margin-top:10px;
+    font-size:25px;
+    font-weight:900;
+}
+
+.enviar{
+    width:100%;
+    margin-top:15px;
+    padding:19px;
+    border:0;
+    border-radius:14px;
+    background:#e30613;
+    color:#fff;
+    font-size:25px;
+    font-weight:900;
+}
+
+.limpiar{
+    width:100%;
+    margin-top:9px;
+    padding:13px;
+    border:2px solid #444;
+    border-radius:12px;
+    background:#151515;
+    color:#fff;
+    font-size:17px;
+    font-weight:900;
+}
+
+.mensaje{
+    text-align:center;
+    min-height:25px;
+    margin-top:12px;
+    color:#ffd400;
+    font-weight:900;
+}
+
+.oculto{
+    display:none;
+}
+</style>
+</head>
+
+<body>
+
+<header>🌮 EL TACONAZO</header>
+
+<div class="contenedor">
+
+<div class="tipo">
+    <button id="btnMesa" class="activo" onclick="tipoMesa()">MESA</button>
+    <button id="btnLlevar" onclick="tipoLlevar()">PARA LLEVAR</button>
+</div>
+
+<div class="mesa" id="cajaMesa">
+    <label>NÚMERO DE MESA</label>
+    <input
+        id="numeroMesa"
+        type="number"
+        min="1"
+        inputmode="numeric"
+        placeholder="Ej. 5"
+        oninput="actualizarResumen()"
+    >
+</div>
+
+<h2>🌮 TACOS</h2>
+
+<div class="producto">
+    <div class="producto-cabecera">
+        <div class="nombre">TACO ADO</div>
+
+        <input
+            id="cantidadAdo"
+            class="cantidad"
+            type="number"
+            min="1"
+            inputmode="numeric"
+            placeholder=""
+            oninput="actualizarProducto('ado')"
+        >
+    </div>
+
+    <div id="modAdo" class="modificaciones">
+
+        <button onclick="seleccionarHarina('ado',this)">
+            HARINA
+        </button>
+
+        <button onclick="seleccionarVerdura('ado','s/cilantro')">
+            S/CILANTRO
+        </button>
+
+        <button onclick="seleccionarVerdura('ado','s/cebolla')">
+            S/CEBOLLA
+        </button>
+
+        <button onclick="seleccionarVerdura('ado','s/v')">
+            S/V
+        </button>
+
+    </div>
+</div>
+
+<div class="producto">
+    <div class="producto-cabecera">
+        <div class="nombre">TACO RES</div>
+
+        <input
+            id="cantidadRes"
+            class="cantidad"
+            type="number"
+            min="1"
+            inputmode="numeric"
+            placeholder=""
+            oninput="actualizarProducto('res')"
+        >
+    </div>
+
+    <div id="modRes" class="modificaciones">
+
+        <button onclick="seleccionarHarina('res',this)">
+            HARINA
+        </button>
+
+        <button onclick="seleccionarVerdura('res','s/cilantro')">
+            S/CILANTRO
+        </button>
+
+        <button onclick="seleccionarVerdura('res','s/cebolla')">
+            S/CEBOLLA
+        </button>
+
+        <button onclick="seleccionarVerdura('res','s/v')">
+            S/V
+        </button>
+
+    </div>
+</div>
+
+<h2>🥪 TORTAS</h2>
+
+<div class="producto">
+    <div class="producto-cabecera">
+        <div class="nombre">TORTA ADO</div>
+
+        <input
+            id="cantidadTortaAdo"
+            class="cantidad"
+            type="number"
+            min="1"
+            inputmode="numeric"
+            placeholder=""
+            oninput="actualizarProducto('tortaAdo')"
+        >
+    </div>
+
+    <div id="modTortaAdo" class="modificaciones">
+
+        <button onclick="seleccionarVerdura('tortaAdo','s/cilantro')">
+            S/CILANTRO
+        </button>
+
+        <button onclick="seleccionarVerdura('tortaAdo','s/cebolla')">
+            S/CEBOLLA
+        </button>
+
+        <button onclick="seleccionarVerdura('tortaAdo','s/v')">
+            S/V
+        </button>
+
+    </div>
+</div>
+
+<div class="producto">
+    <div class="producto-cabecera">
+        <div class="nombre">TORTA RES</div>
+
+        <input
+            id="cantidadTortaRes"
+            class="cantidad"
+            type="number"
+            min="1"
+            inputmode="numeric"
+            placeholder=""
+            oninput="actualizarProducto('tortaRes')"
+        >
+    </div>
+
+    <div id="modTortaRes" class="modificaciones">
+
+        <button onclick="seleccionarVerdura('tortaRes','s/cilantro')">
+            S/CILANTRO
+        </button>
+
+        <button onclick="seleccionarVerdura('tortaRes','s/cebolla')">
+            S/CEBOLLA
+        </button>
+
+        <button onclick="seleccionarVerdura('tortaRes','s/v')">
+            S/V
+        </button>
+
+    </div>
+</div>
+
+<h2>🥤 BEBIDAS</h2>
+
+<div class="producto">
+    <div class="producto-cabecera">
+        <div class="nombre">COCA</div>
+        <input id="cantidadCoca" class="cantidad" type="number" min="1" inputmode="numeric" placeholder="" oninput="actualizarResumen()">
+    </div>
+</div>
+
+<div class="producto">
+    <div class="producto-cabecera">
+        <div class="nombre">SPRITE</div>
+        <input id="cantidadSprite" class="cantidad" type="number" min="1" inputmode="numeric" placeholder="" oninput="actualizarResumen()">
+    </div>
+</div>
+
+<div class="producto">
+    <div class="producto-cabecera">
+        <div class="nombre">FANTA</div>
+        <input id="cantidadFanta" class="cantidad" type="number" min="1" inputmode="numeric" placeholder="" oninput="actualizarResumen()">
+    </div>
+</div>
+
+<div class="producto">
+    <div class="producto-cabecera">
+        <div class="nombre">AGUA MINERAL</div>
+        <input id="cantidadAgua" class="cantidad" type="number" min="1" inputmode="numeric" placeholder="" oninput="actualizarResumen()">
+    </div>
+</div>
+
+<div class="producto">
+    <div class="producto-cabecera">
+        <div class="nombre">CERVEZA</div>
+        <input id="cantidadCerveza" class="cantidad" type="number" min="1" inputmode="numeric" placeholder="" oninput="actualizarResumen()">
+    </div>
+</div>
+
+<div class="resumen">
+
+    <div class="resumen-titulo">PEDIDO</div>
+
+    <div id="tipoResumen">MESA</div>
+
+    <div id="listaPedido">
+        Todavía no hay productos.
+    </div>
+
+    <div class="total" id="total">
+        TOTAL: $0
+    </div>
+
+</div>
+
+<button class="enviar" onclick="enviarPedido()">
+    ENVIAR PEDIDO
+</button>
+
+<button class="limpiar" onclick="limpiarPedido()">
+    LIMPIAR PEDIDO
+</button>
+
+<div id="mensaje" class="mensaje"></div>
+
+</div>
+
+<script>
+
+const productos={
+    ado:{
+        nombre:"ADO",
+        precio:17,
+        cantidad:"cantidadAdo",
+        modificacion:"modAdo"
+    },
+
+    res:{
+        nombre:"RES",
+        precio:17,
+        cantidad:"cantidadRes",
+        modificacion:"modRes"
+    },
+
+    tortaAdo:{
+        nombre:"TORTA ADO",
+        precio:45,
+        cantidad:"cantidadTortaAdo",
+        modificacion:"modTortaAdo"
+    },
+
+    tortaRes:{
+        nombre:"TORTA RES",
+        precio:45,
+        cantidad:"cantidadTortaRes",
+        modificacion:"modTortaRes"
+    },
+
+    coca:{
+        nombre:"COCA",
+        precio:25,
+        cantidad:"cantidadCoca"
+    },
+
+    sprite:{
+        nombre:"SPRITE",
+        precio:25,
+        cantidad:"cantidadSprite"
+    },
+
+    fanta:{
+        nombre:"FANTA",
+        precio:25,
+        cantidad:"cantidadFanta"
+    },
+
+    agua:{
+        nombre:"AGUA MINERAL",
+        precio:25,
+        cantidad:"cantidadAgua"
+    },
+
+    cerveza:{
+        nombre:"CERVEZA",
+        precio:25,
+        cantidad:"cantidadCerveza"
+    }
+};
+
+let tipo="mesa";
+
+let opciones={
+    ado:{harina:false,verdura:null},
+    res:{harina:false,verdura:null},
+    tortaAdo:{harina:false,verdura:null},
+    tortaRes:{harina:false,verdura:null}
+};
+
+function tipoMesa(){
+
+    tipo="mesa";
+
+    document.getElementById("btnMesa").classList.add("activo");
+    document.getElementById("btnLlevar").classList.remove("activo");
+
+    document.getElementById("cajaMesa").classList.remove("oculto");
+
+    actualizarResumen();
+}
+
+function tipoLlevar(){
+
+    tipo="llevar";
+
+    document.getElementById("btnLlevar").classList.add("activo");
+    document.getElementById("btnMesa").classList.remove("activo");
+
+    document.getElementById("cajaMesa").classList.add("oculto");
+
+    actualizarResumen();
+}
+
+function actualizarProducto(id){
+
+    const producto=productos[id];
+    const input=document.getElementById(producto.cantidad);
+
+    const cantidad=
+        input.value.trim()===""
+        ? 0
+        : parseInt(input.value);
+
+    const caja=document.getElementById(producto.modificacion);
+
+    if(cantidad>0){
+
+        caja.style.display="flex";
+
+    }else{
+
+        caja.style.display="none";
+
+        if(opciones[id]){
+            opciones[id].harina=false;
+            opciones[id].verdura=null;
+        }
+
+        caja.querySelectorAll("button").forEach(b=>{
+            b.classList.remove("seleccionado");
+        });
+    }
+
+    actualizarResumen();
+}
+
+function seleccionarHarina(id,boton){
+
+    const cantidad=
+        parseInt(
+            document.getElementById(
+                productos[id].cantidad
+            ).value
+        ) || 0;
+
+    if(cantidad<=0)return;
+
+    opciones[id].harina=!opciones[id].harina;
+
+    boton.classList.toggle(
+        "seleccionado",
+        opciones[id].harina
+    );
+
+    actualizarResumen();
+}
+
+function seleccionarVerdura(id,opcion){
+
+    const cantidad=
+        parseInt(
+            document.getElementById(
+                productos[id].cantidad
+            ).value
+        ) || 0;
+
+    if(cantidad<=0)return;
+
+    /*
+    S/CILANTRO + S/CEBOLLA =
+    automáticamente S/V.
+    */
+
+    if(opcion==="s/cilantro"){
+
+        if(opciones[id].verdura==="s/cebolla"){
+            opciones[id].verdura="s/v";
+        }else{
+            opciones[id].verdura=
+                opciones[id].verdura==="s/cilantro"
+                ? null
+                : "s/cilantro";
+        }
+
+    }else if(opcion==="s/cebolla"){
+
+        if(opciones[id].verdura==="s/cilantro"){
+            opciones[id].verdura="s/v";
+        }else{
+            opciones[id].verdura=
+                opciones[id].verdura==="s/cebolla"
+                ? null
+                : "s/cebolla";
+        }
+
+    }else{
+
+        opciones[id].verdura=
+            opciones[id].verdura==="s/v"
+            ? null
+            : "s/v";
+    }
+
+    actualizarBotones(id);
+    actualizarResumen();
+}
+
+function actualizarBotones(id){
+
+    const caja=
+        document.getElementById(
+            productos[id].modificacion
+        );
+
+    caja.querySelectorAll("button").forEach(boton=>{
+
+        boton.classList.remove("seleccionado");
+
+        const texto=
+            boton.textContent.trim().toLowerCase();
+
+        if(
+            texto==="s/cilantro" &&
+            opciones[id].verdura==="s/cilantro"
+        ){
+            boton.classList.add("seleccionado");
+        }
+
+        if(
+            texto==="s/cebolla" &&
+            opciones[id].verdura==="s/cebolla"
+        ){
+            boton.classList.add("seleccionado");
+        }
+
+        if(
+            texto==="s/v" &&
+            opciones[id].verdura==="s/v"
+        ){
+            boton.classList.add("seleccionado");
+        }
+    });
+}
+
+function textoOpciones(id){
+
+    let lista=[];
+
+    if(opciones[id]){
+
+        if(opciones[id].harina){
+            lista.push("HARINA");
+        }
+
+        if(opciones[id].verdura){
+            lista.push(
+                opciones[id].verdura.toUpperCase()
+            );
+        }
+    }
+
+    return lista.length
+        ? " — "+lista.join(" — ")
+        : "";
+}
+
+function actualizarResumen(){
+
+    let html="";
+    let total=0;
+    let hay=false;
+
+    if(tipo==="mesa"){
+
+        const mesa=
+            document.getElementById("numeroMesa").value;
+
+        document.getElementById("tipoResumen").textContent=
+            mesa
+            ? "MESA "+mesa
+            : "MESA — SIN NÚMERO";
+
+    }else{
+
+        document.getElementById("tipoResumen").textContent=
+            "PARA LLEVAR";
+    }
+
+    for(const id in productos){
+
+        const producto=productos[id];
+
+        const input=
+            document.getElementById(producto.cantidad);
+
+        const cantidad=
+            input.value.trim()===""
+            ? 0
+            : parseInt(input.value);
+
+        if(cantidad>0){
+
+            hay=true;
+
+            let texto=
+                cantidad+" "+producto.nombre;
+
+            texto+=textoOpciones(id);
+
+            html+="<div>"+texto+"</div>";
+
+            total+=cantidad*producto.precio;
+        }
+    }
+
+    document.getElementById("listaPedido").innerHTML=
+        hay
+        ? html
+        : "Todavía no hay productos.";
+
+    document.getElementById("total").textContent=
+        "TOTAL: $"+total;
+}
+
+function enviarPedido(){
+
+    const mensaje=
+        document.getElementById("mensaje");
+
+    if(tipo==="mesa"){
+
+        const mesa=
+            document.getElementById("numeroMesa").value.trim();
+
+        if(!mesa){
+
+            mensaje.textContent=
+                "Falta el número de mesa.";
+
+            return;
+        }
+    }
+
+    let hay=false;
+
+    for(const id in productos){
+
+        const producto=productos[id];
+
+        const input=
+            document.getElementById(producto.cantidad);
+
+        const cantidad=
+            input.value.trim()===""
+            ? 0
+            : parseInt(input.value);
+
+        if(cantidad>0){
+
+            hay=true;
+            break;
+        }
+    }
+
+    if(!hay){
+
+        mensaje.textContent=
+            "Agrega al menos un producto.";
+
+        return;
+    }
+
+    mensaje.textContent=
+        "Pedido listo para conectar con MAGIA.";
+
+    setTimeout(()=>{
+        mensaje.textContent="";
+    },3000);
+}
+
+function limpiarPedido(){
+
+    for(const id in productos){
+
+        const producto=productos[id];
+
+        document.getElementById(
+            producto.cantidad
+        ).value="";
+
+        if(producto.modificacion){
+
+            const caja=
+                document.getElementById(
+                    producto.modificacion
+                );
+
+            caja.style.display="none";
+
+            caja.querySelectorAll("button")
+                .forEach(b=>{
+                    b.classList.remove("seleccionado");
+                });
+        }
+    }
+
+    opciones={
+        ado:{harina:false,verdura:null},
+        res:{harina:false,verdura:null},
+        tortaAdo:{harina:false,verdura:null},
+        tortaRes:{harina:false,verdura:null}
+    };
+
+    document.getElementById("numeroMesa").value="";
+
+    actualizarResumen();
+
+    document.getElementById("mensaje").textContent="";
+}
+
+document.querySelectorAll(".cantidad").forEach(input=>{
+
+    input.addEventListener("focus",function(){
+        this.select();
+    });
+
+});
+
+actualizarResumen();
+
+</script>
+
+</body>
+</html>
