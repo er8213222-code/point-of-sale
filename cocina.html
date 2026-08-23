@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Pantalla de Cocina</title>
+
+<style>
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#111;
+  color:white;
+}
+
+header{
+  background:#e00000;
+  padding:20px;
+  text-align:center;
+  font-size:32px;
+  font-weight:bold;
+}
+
+#pedidos{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+  gap:20px;
+  padding:20px;
+}
+
+.pedido{
+  background:#222;
+  border-radius:15px;
+  padding:20px;
+  box-shadow:0 0 10px #000;
+}
+
+.pedido h2{
+  margin-top:0;
+  color:#ffd000;
+}
+
+.producto{
+  font-size:24px;
+  margin:12px 0;
+}
+
+.cantidad{
+  font-weight:bold;
+  color:#00ff66;
+}
+
+.hora{
+  color:#aaa;
+  margin-top:15px;
+}
+
+.vacio{
+  text-align:center;
+  font-size:28px;
+  color:#aaa;
+  margin-top:100px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+🍳 PEDIDOS DE COCINA
+</header>
+
+<div id="pedidos">
+  <div class="vacio">Esperando pedidos...</div>
+</div>
+
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
+
+import {
+  getFirestore,
+  collection,
+  onSnapshot,
+  query,
+  orderBy
+}
+from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDdjJo6-qYv0eMUmQ7iiH7S3sNOP19_7Z0",
+  authDomain: "point-of-sale-8432a.firebaseapp.com",
+  projectId: "point-of-sale-8432a",
+  storageBucket: "point-of-sale-8432a.firebasestorage.app",
+  messagingSenderId: "599149903276",
+  appId: "1:599149903276:web:e3d88bc6bc5e19ed184e09"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const pedidosRef = collection(db,"pedidos");
+
+const pedidosQuery = query(
+  pedidosRef,
+  orderBy("fecha","desc")
+);
+
+onSnapshot(pedidosQuery,(snapshot)=>{
+
+  const contenedor = document.getElementById("pedidos");
+
+  contenedor.innerHTML = "";
+
+  if(snapshot.empty){
+
+    contenedor.innerHTML =
+      '<div class="vacio">Esperando pedidos...</div>';
+
+    return;
+  }
+
+  snapshot.forEach((doc)=>{
+
+    const datos = doc.data();
+
+    const tarjeta = document.createElement("div");
+
+    tarjeta.className = "pedido";
+
+    let productosHTML = "";
+
+    datos.pedido.forEach((producto)=>{
+
+      productosHTML += `
+        <div class="producto">
+          <span class="cantidad">
+            ${producto.cantidad}x
+          </span>
+          ${producto.producto}
+        </div>
+      `;
+
+    });
+
+    let hora = "";
+
+    if(datos.fecha){
+
+      hora = datos.fecha.toDate().toLocaleTimeString(
+        "es-MX",
+        {
+          hour:"2-digit",
+          minute:"2-digit"
+        }
+      );
+
+    }
+
+    tarjeta.innerHTML = `
+      <h2>🛎️ NUEVO PEDIDO</h2>
+
+      ${productosHTML}
+
+      <div class="hora">
+        ${hora}
+      </div>
+    `;
+
+    contenedor.appendChild(tarjeta);
+
+  });
+
+});
+
+</script>
+
+</body>
+</html>
