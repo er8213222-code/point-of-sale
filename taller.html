@@ -204,234 +204,175 @@ h2{
 
 <div class="contenedor">
 
-    <div class="tipo">
-        <button id="btnMesa" class="activo" onclick="tipoMesa()">
-            🪑 MESA
-        </button>
+<div class="tipo">
+    <button id="btnMesa" class="activo" onclick="tipoMesa()">🪑 MESA</button>
+    <button id="btnLlevar" onclick="tipoLlevar()">PARA LLEVAR</button>
+</div>
 
-        <button id="btnLlevar" onclick="tipoLlevar()">
-            PARA LLEVAR
-        </button>
-    </div>
+<div class="mesa" id="cajaMesa">
+    <label>NÚMERO DE MESA</label>
+    <input
+        id="numeroMesa"
+        type="number"
+        min="1"
+        inputmode="numeric"
+        placeholder="Ej. 5"
+        oninput="actualizarResumen()"
+    >
+</div>
 
-    <div class="mesa" id="cajaMesa">
-        <label>NÚMERO DE MESA</label>
+<h2>🌮 TACOS</h2>
+
+<div class="producto">
+    <div class="producto-cabecera">
+        <div>
+            <div class="nombre">ADO</div>
+            <div class="precio">$17</div>
+        </div>
+
         <input
-            id="numeroMesa"
+            id="cantidadAdo"
+            class="cantidad"
             type="number"
             min="1"
             inputmode="numeric"
-            placeholder="Ej. 5"
-            oninput="actualizarResumen()"
+            placeholder=""
+            oninput="actualizarProducto('ado')"
         >
     </div>
 
-    <h2>🌮 TACOS</h2>
+    <div id="modAdo" class="modificaciones">
+        <button onclick="seleccionarMod('ado','sin cilantro',this)">SIN CILANTRO</button>
+        <button onclick="seleccionarMod('ado','sin cebolla',this)">SIN CEBOLLA</button>
+        <button onclick="seleccionarMod('ado','s/v',this)">S/V</button>
+    </div>
+</div>
 
-    <!-- ADO -->
-    <div class="producto">
-        <div class="producto-cabecera">
-            <div>
-                <div class="nombre">ADO</div>
-                <div class="precio">$17</div>
-            </div>
-
-            <input
-                id="cantidadAdo"
-                class="cantidad"
-                type="number"
-                min="0"
-                value="0"
-                inputmode="numeric"
-                oninput="actualizarProducto('ado')"
-            >
+<div class="producto">
+    <div class="producto-cabecera">
+        <div>
+            <div class="nombre">RES</div>
+            <div class="precio">$17</div>
         </div>
 
-        <div id="modAdo" class="modificaciones">
-            <button onclick="seleccionarMod('ado','sin cilantro',this)">
-                SIN CILANTRO
-            </button>
-
-            <button onclick="seleccionarMod('ado','sin cebolla',this)">
-                SIN CEBOLLA
-            </button>
-
-            <button onclick="seleccionarMod('ado','s/v',this)">
-                S/V
-            </button>
-        </div>
+        <input
+            id="cantidadRes"
+            class="cantidad"
+            type="number"
+            min="1"
+            inputmode="numeric"
+            placeholder=""
+            oninput="actualizarProducto('res')"
+        >
     </div>
 
-    <!-- RES -->
-    <div class="producto">
-        <div class="producto-cabecera">
-            <div>
-                <div class="nombre">RES</div>
-                <div class="precio">$17</div>
-            </div>
+    <div id="modRes" class="modificaciones">
+        <button onclick="seleccionarMod('res','sin cilantro',this)">SIN CILANTRO</button>
+        <button onclick="seleccionarMod('res','sin cebolla',this)">SIN CEBOLLA</button>
+        <button onclick="seleccionarMod('res','s/v',this)">S/V</button>
+    </div>
+</div>
 
-            <input
-                id="cantidadRes"
-                class="cantidad"
-                type="number"
-                min="0"
-                value="0"
-                inputmode="numeric"
-                oninput="actualizarProducto('res')"
-            >
+<h2>🥪 TORTAS</h2>
+
+<div class="producto">
+    <div class="producto-cabecera">
+        <div>
+            <div class="nombre">TORTA ADO</div>
+            <div class="precio">$45</div>
         </div>
 
-        <div id="modRes" class="modificaciones">
-            <button onclick="seleccionarMod('res','sin cilantro',this)">
-                SIN CILANTRO
-            </button>
-
-            <button onclick="seleccionarMod('res','sin cebolla',this)">
-                SIN CEBOLLA
-            </button>
-
-            <button onclick="seleccionarMod('res','s/v',this)">
-                S/V
-            </button>
-        </div>
+        <input
+            id="cantidadTortaAdo"
+            class="cantidad"
+            type="number"
+            min="1"
+            inputmode="numeric"
+            placeholder=""
+            oninput="actualizarProducto('tortaAdo')"
+        >
     </div>
 
-    <h2>🥪 TORTAS</h2>
+    <div id="modTortaAdo" class="modificaciones">
+        <button onclick="seleccionarMod('tortaAdo','sin cilantro',this)">SIN CILANTRO</button>
+        <button onclick="seleccionarMod('tortaAdo','sin cebolla',this)">SIN CEBOLLA</button>
+        <button onclick="seleccionarMod('tortaAdo','s/v',this)">S/V</button>
+    </div>
+</div>
 
-    <!-- TORTA ADO -->
-    <div class="producto">
-        <div class="producto-cabecera">
-            <div>
-                <div class="nombre">TORTA ADO</div>
-                <div class="precio">$45</div>
-            </div>
-
-            <input
-                id="cantidadTortaAdo"
-                class="cantidad"
-                type="number"
-                min="0"
-                value="0"
-                inputmode="numeric"
-                oninput="actualizarProducto('tortaAdo')"
-            >
+<div class="producto">
+    <div class="producto-cabecera">
+        <div>
+            <div class="nombre">TORTA RES</div>
+            <div class="precio">$45</div>
         </div>
 
-        <div id="modTortaAdo" class="modificaciones">
-            <button onclick="seleccionarMod('tortaAdo','sin cilantro',this)">
-                SIN CILANTRO
-            </button>
-
-            <button onclick="seleccionarMod('tortaAdo','sin cebolla',this)">
-                SIN CEBOLLA
-            </button>
-
-            <button onclick="seleccionarMod('tortaAdo','s/v',this)">
-                S/V
-            </button>
-        </div>
+        <input
+            id="cantidadTortaRes"
+            class="cantidad"
+            type="number"
+            min="1"
+            inputmode="numeric"
+            placeholder=""
+            oninput="actualizarProducto('tortaRes')"
+        >
     </div>
 
-    <!-- TORTA RES -->
-    <div class="producto">
-        <div class="producto-cabecera">
-            <div>
-                <div class="nombre">TORTA RES</div>
-                <div class="precio">$45</div>
-            </div>
-
-            <input
-                id="cantidadTortaRes"
-                class="cantidad"
-                type="number"
-                min="0"
-                value="0"
-                inputmode="numeric"
-                oninput="actualizarProducto('tortaRes')"
-            >
-        </div>
-
-        <div id="modTortaRes" class="modificaciones">
-            <button onclick="seleccionarMod('tortaRes','sin cilantro',this)">
-                SIN CILANTRO
-            </button>
-
-            <button onclick="seleccionarMod('tortaRes','sin cebolla',this)">
-                SIN CEBOLLA
-            </button>
-
-            <button onclick="seleccionarMod('tortaRes','s/v',this)">
-                S/V
-            </button>
-        </div>
+    <div id="modTortaRes" class="modificaciones">
+        <button onclick="seleccionarMod('tortaRes','sin cilantro',this)">SIN CILANTRO</button>
+        <button onclick="seleccionarMod('tortaRes','sin cebolla',this)">SIN CEBOLLA</button>
+        <button onclick="seleccionarMod('tortaRes','s/v',this)">S/V</button>
     </div>
+</div>
 
-    <h2>🥤 BEBIDAS</h2>
+<h2>🥤 BEBIDAS</h2>
 
-    <div class="producto">
-        <div class="producto-cabecera">
-            <div class="nombre">COCA <span class="precio">$25</span></div>
-            <input id="cantidadCoca" class="cantidad" type="number" min="0" value="0" inputmode="numeric" oninput="actualizarResumen()">
-        </div>
+<div class="producto">
+    <div class="producto-cabecera">
+        <div class="nombre">COCA <span class="precio">$25</span></div>
+        <input id="cantidadCoca" class="cantidad" type="number" min="1" inputmode="numeric" placeholder="" oninput="actualizarResumen()">
     </div>
+</div>
 
-    <div class="producto">
-        <div class="producto-cabecera">
-            <div class="nombre">SPRITE <span class="precio">$25</span></div>
-            <input id="cantidadSprite" class="cantidad" type="number" min="0" value="0" inputmode="numeric" oninput="actualizarResumen()">
-        </div>
+<div class="producto">
+    <div class="producto-cabecera">
+        <div class="nombre">SPRITE <span class="precio">$25</span></div>
+        <input id="cantidadSprite" class="cantidad" type="number" min="1" inputmode="numeric" placeholder="" oninput="actualizarResumen()">
     </div>
+</div>
 
-    <div class="producto">
-        <div class="producto-cabecera">
-            <div class="nombre">FANTA <span class="precio">$25</span></div>
-            <input id="cantidadFanta" class="cantidad" type="number" min="0" value="0" inputmode="numeric" oninput="actualizarResumen()">
-        </div>
+<div class="producto">
+    <div class="producto-cabecera">
+        <div class="nombre">FANTA <span class="precio">$25</span></div>
+        <input id="cantidadFanta" class="cantidad" type="number" min="1" inputmode="numeric" placeholder="" oninput="actualizarResumen()">
     </div>
+</div>
 
-    <div class="producto">
-        <div class="producto-cabecera">
-            <div class="nombre">AGUA MINERAL <span class="precio">$25</span></div>
-            <input id="cantidadAgua" class="cantidad" type="number" min="0" value="0" inputmode="numeric" oninput="actualizarResumen()">
-        </div>
+<div class="producto">
+    <div class="producto-cabecera">
+        <div class="nombre">AGUA MINERAL <span class="precio">$25</span></div>
+        <input id="cantidadAgua" class="cantidad" type="number" min="1" inputmode="numeric" placeholder="" oninput="actualizarResumen()">
     </div>
+</div>
 
-    <div class="producto">
-        <div class="producto-cabecera">
-            <div class="nombre">CERVEZA <span class="precio">$25</span></div>
-            <input id="cantidadCerveza" class="cantidad" type="number" min="0" value="0" inputmode="numeric" oninput="actualizarResumen()">
-        </div>
+<div class="producto">
+    <div class="producto-cabecera">
+        <div class="nombre">CERVEZA <span class="precio">$25</span></div>
+        <input id="cantidadCerveza" class="cantidad" type="number" min="1" inputmode="numeric" placeholder="" oninput="actualizarResumen()">
     </div>
+</div>
 
-    <div class="resumen">
+<div class="resumen">
+    <div class="resumen-titulo">PEDIDO</div>
+    <div id="tipoResumen">MESA</div>
+    <div id="listaPedido">Todavía no hay productos.</div>
+    <div class="total" id="total">TOTAL: $0</div>
+</div>
 
-        <div class="resumen-titulo">
-            PEDIDO
-        </div>
+<button class="enviar" onclick="enviarPedido()">ENVIAR PEDIDO</button>
+<button class="limpiar" onclick="limpiarPedido()">LIMPIAR PEDIDO</button>
 
-        <div id="tipoResumen">
-            MESA
-        </div>
-
-        <div id="listaPedido">
-            Todavía no hay productos.
-        </div>
-
-        <div class="total" id="total">
-            TOTAL: $0
-        </div>
-
-    </div>
-
-    <button class="enviar" onclick="enviarPedido()">
-        ENVIAR PEDIDO
-    </button>
-
-    <button class="limpiar" onclick="limpiarPedido()">
-        LIMPIAR PEDIDO
-    </button>
-
-    <div id="mensaje" class="mensaje"></div>
+<div id="mensaje" class="mensaje"></div>
 
 </div>
 
@@ -509,7 +450,7 @@ let modificaciones = {
 
 function tipoMesa(){
 
-    tipo = "mesa";
+    tipo="mesa";
 
     document.getElementById("btnMesa").classList.add("activo");
     document.getElementById("btnLlevar").classList.remove("activo");
@@ -521,7 +462,7 @@ function tipoMesa(){
 
 function tipoLlevar(){
 
-    tipo = "llevar";
+    tipo="llevar";
 
     document.getElementById("btnLlevar").classList.add("activo");
     document.getElementById("btnMesa").classList.remove("activo");
@@ -533,36 +474,29 @@ function tipoLlevar(){
 
 function actualizarProducto(id){
 
-    const producto = productos[id];
+    const producto=productos[id];
 
-    const input = document.getElementById(producto.cantidad);
+    const input=document.getElementById(producto.cantidad);
 
-    let cantidad = parseInt(input.value);
+    let cantidad=parseInt(input.value);
 
-    if(isNaN(cantidad) || cantidad < 0){
-        cantidad = 0;
+    if(isNaN(cantidad) || cantidad<1){
+        cantidad=0;
     }
-
-    input.value = cantidad;
 
     if(producto.modificacion){
 
-        const caja = document.getElementById(producto.modificacion);
+        const caja=document.getElementById(producto.modificacion);
 
-        if(cantidad > 0){
+        if(cantidad>0){
 
-            /*
-             * IMPORTANTE:
-             * Se muestra inmediatamente cuando se escribe
-             * la cantidad de ESTE producto.
-             */
-            caja.style.display = "flex";
+            caja.style.display="flex";
 
         }else{
 
-            caja.style.display = "none";
+            caja.style.display="none";
 
-            modificaciones[id] = null;
+            modificaciones[id]=null;
 
             caja.querySelectorAll("button").forEach(boton=>{
                 boton.classList.remove("seleccionado");
@@ -575,19 +509,17 @@ function actualizarProducto(id){
 
 function seleccionarMod(id,mod,boton){
 
-    const producto = productos[id];
+    const producto=productos[id];
 
-    const cantidad =
-        parseInt(document.getElementById(producto.cantidad).value) || 0;
+    const cantidad=
+        parseInt(document.getElementById(producto.cantidad).value)||0;
 
-    if(cantidad <= 0){
-        return;
-    }
+    if(cantidad<=0)return;
 
-    modificaciones[id] =
-        modificaciones[id] === mod ? null : mod;
+    modificaciones[id]=
+        modificaciones[id]===mod ? null : mod;
 
-    const caja =
+    const caja=
         document.getElementById(producto.modificacion);
 
     caja.querySelectorAll("button").forEach(boton=>{
@@ -603,102 +535,98 @@ function seleccionarMod(id,mod,boton){
 
 function actualizarResumen(){
 
-    let html = "";
-    let total = 0;
-    let hay = false;
+    let html="";
+    let total=0;
+    let hay=false;
 
-    if(tipo === "mesa"){
+    if(tipo==="mesa"){
 
-        const mesa =
-            document.getElementById("numeroMesa").value;
+        const mesa=document.getElementById("numeroMesa").value;
 
-        document.getElementById("tipoResumen").textContent =
-            mesa ? "MESA " + mesa : "MESA — SIN NÚMERO";
+        document.getElementById("tipoResumen").textContent=
+            mesa ? "MESA "+mesa : "MESA — SIN NÚMERO";
 
     }else{
 
-        document.getElementById("tipoResumen").textContent =
+        document.getElementById("tipoResumen").textContent=
             "PARA LLEVAR";
     }
 
     for(const id in productos){
 
-        const producto = productos[id];
+        const producto=productos[id];
 
-        const cantidad =
-            parseInt(document.getElementById(producto.cantidad).value) || 0;
+        const cantidad=
+            parseInt(document.getElementById(producto.cantidad).value)||0;
 
-        if(cantidad > 0){
+        if(cantidad>0){
 
-            hay = true;
+            hay=true;
 
-            let texto =
-                cantidad + " " + producto.nombre;
+            let texto=
+                cantidad+" "+producto.nombre;
 
             if(modificaciones[id]){
-                texto += " (" + modificaciones[id] + ")";
+                texto+=" ("+modificaciones[id]+")";
             }
 
-            html += "<div>" + texto + "</div>";
+            html+="<div>"+texto+"</div>";
 
-            total += cantidad * producto.precio;
+            total+=cantidad*producto.precio;
         }
     }
 
-    document.getElementById("listaPedido").innerHTML =
+    document.getElementById("listaPedido").innerHTML=
         hay ? html : "Todavía no hay productos.";
 
-    document.getElementById("total").textContent =
-        "TOTAL: $" + total;
+    document.getElementById("total").textContent=
+        "TOTAL: $"+total;
 }
 
 function enviarPedido(){
 
-    const mensaje =
-        document.getElementById("mensaje");
+    const mensaje=document.getElementById("mensaje");
 
-    if(tipo === "mesa"){
+    if(tipo==="mesa"){
 
-        const mesa =
+        const mesa=
             document.getElementById("numeroMesa").value.trim();
 
         if(!mesa){
 
-            mensaje.textContent =
-                "Falta el número de mesa.";
+            mensaje.textContent="Falta el número de mesa.";
 
             return;
         }
     }
 
-    let hay = false;
+    let hay=false;
 
     for(const id in productos){
 
-        const producto = productos[id];
+        const producto=productos[id];
 
-        const cantidad =
-            parseInt(document.getElementById(producto.cantidad).value) || 0;
+        const cantidad=
+            parseInt(document.getElementById(producto.cantidad).value)||0;
 
-        if(cantidad > 0){
-            hay = true;
+        if(cantidad>0){
+            hay=true;
             break;
         }
     }
 
     if(!hay){
 
-        mensaje.textContent =
-            "Agrega al menos un producto.";
+        mensaje.textContent="Agrega al menos un producto.";
 
         return;
     }
 
-    mensaje.textContent =
+    mensaje.textContent=
         "Pedido listo para conectar con MAGIA.";
 
     setTimeout(()=>{
-        mensaje.textContent = "";
+        mensaje.textContent="";
     },3000);
 }
 
@@ -706,35 +634,45 @@ function limpiarPedido(){
 
     for(const id in productos){
 
-        const producto = productos[id];
+        const producto=productos[id];
 
-        document.getElementById(producto.cantidad).value = 0;
+        document.getElementById(producto.cantidad).value="";
 
         if(producto.modificacion){
 
-            document.getElementById(producto.modificacion)
-                .style.display = "none";
+            const caja=
+                document.getElementById(producto.modificacion);
 
-            document.getElementById(producto.modificacion)
-                .querySelectorAll("button")
-                .forEach(boton=>{
-                    boton.classList.remove("seleccionado");
-                });
+            caja.style.display="none";
 
-            modificaciones[id] = null;
+            caja.querySelectorAll("button").forEach(boton=>{
+                boton.classList.remove("seleccionado");
+            });
+
+            modificaciones[id]=null;
         }
     }
 
-    document.getElementById("numeroMesa").value = "";
+    document.getElementById("numeroMesa").value="";
 
     actualizarResumen();
 
-    document.getElementById("mensaje").textContent = "";
+    document.getElementById("mensaje").textContent="";
 }
+
+document.querySelectorAll(".cantidad").forEach(input=>{
+
+    input.addEventListener("focus",function(){
+
+        this.select();
+
+    });
+
+});
 
 actualizarResumen();
 
 </script>
 
 </body>
-                </html>
+        </html>
