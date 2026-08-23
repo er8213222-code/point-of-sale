@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>El Taconazo - Taller</title>
+
+<style>
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:Arial, sans-serif;
+    background:#f5f5f5;
+    color:#111;
+}
+
+header{
+    background:#111;
+    color:#ffd400;
+    text-align:center;
+    padding:15px;
+    font-size:28px;
+    font-weight:900;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    padding:15px;
+}
+
+.tipo-pedido{
+    display:flex;
+    gap:10px;
+    margin-bottom:15px;
+}
+
+.tipo-pedido button{
+    flex:1;
+    padding:15px;
+    border:0;
+    border-radius:12px;
+    font-size:20px;
+    font-weight:900;
+    cursor:pointer;
+    background:white;
+}
+
+.tipo-pedido button.activo{
+    background:#ffd400;
+}
+
+.mesa-box{
+    background:white;
+    border-radius:15px;
+    padding:15px;
+    margin-bottom:15px;
+}
+
+.mesa-box label{
+    display:block;
+    font-size:20px;
+    font-weight:900;
+    margin-bottom:8px;
+}
+
+#mesa{
+    width:100%;
+    padding:14px;
+    font-size:24px;
+    font-weight:900;
+    border:2px solid #111;
+    border-radius:10px;
+}
+
+h2{
+    margin:20px 0 10px;
+    font-size:24px;
+}
+
+.producto{
+    background:white;
+    border-radius:15px;
+    padding:12px;
+    margin-bottom:10px;
+}
+
+.producto-top{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+}
+
+.producto-nombre{
+    font-size:22px;
+    font-weight:900;
+}
+
+.precio{
+    font-size:18px;
+    font-weight:bold;
+}
+
+.cantidad{
+    width:100px;
+    padding:10px;
+    font-size:22px;
+    text-align:center;
+    font-weight:900;
+    border:2px solid #111;
+    border-radius:10px;
+}
+
+.modificaciones{
+    display:none;
+    margin-top:10px;
+    gap:7px;
+    flex-wrap:wrap;
+}
+
+.modificaciones button{
+    border:2px solid #111;
+    background:white;
+    border-radius:9px;
+    padding:9px 12px;
+    font-weight:900;
+    cursor:pointer;
+}
+
+.modificaciones button.seleccionado{
+    background:#ffd400;
+}
+
+.resumen{
+    background:#111;
+    color:white;
+    border-radius:15px;
+    padding:18px;
+    margin-top:20px;
+}
+
+.resumen h2{
+    color:#ffd400;
+    margin-top:0;
+}
+
+#listaPedido{
+    font-size:20px;
+    line-height:1.7;
+}
+
+.enviar{
+    width:100%;
+    margin-top:15px;
+    padding:18px;
+    border:0;
+    border-radius:14px;
+    background:#e30613;
+    color:white;
+    font-size:25px;
+    font-weight:900;
+    cursor:pointer;
+}
+
+.limpiar{
+    width:100%;
+    margin-top:8px;
+    padding:12px;
+    border:2px solid #111;
+    border-radius:12px;
+    background:white;
+    font-weight:900;
+    font-size:17px;
+}
+
+.oculto{
+    display:none;
+}
+
+.mensaje{
+    text-align:center;
+    font-weight:900;
+    margin-top:12px;
+    min-height:24px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    🌮 EL TACONAZO
+</header>
+
+<div class="container">
+
+    <div class="tipo-pedido">
+        <button id="btnMesa" class="activo" onclick="seleccionarTipo('mesa')">
+            🪑 MESA
+        </button>
+
+        <button id="btnLlevar" onclick="seleccionarTipo('llevar')">
+            PARA LLEVAR
+        </button>
+    </div>
+
+    <div class="mesa-box" id="mesaBox">
+        <label for="mesa">Número de mesa</label>
+        <input
+            id="mesa"
+            type="number"
+            min="1"
+            inputmode="numeric"
+            placeholder="Ej. 5"
+        >
+    </div>
+
+    <h2>🌮 TACOS</h2>
+
+    <div class="producto">
+        <div class="producto-top">
+            <div>
+                <div class="producto-nombre">ADO</div>
+                <div class="precio">$17</div>
+            </div>
+
+            <input
+                class="cantidad"
+                id="ado"
+                type="number"
+                min="0"
+                value="0"
+                inputmode="numeric"
+                onchange="actualizarProducto('ado')"
+            >
+        </div>
+
+        <div class="modificaciones" id="mods-ado">
+            <button onclick="modificar('ado','sin cilantro',this)">SIN CILANTRO</button>
+            <button onclick="modificar('ado','sin cebolla',this)">SIN CEBOLLA</button>
+            <button onclick="modificar('ado','s/v',this)">S/V</button>
+        </div>
+    </div>
+
+    <div class="producto">
+        <div class="producto-top">
+            <div>
+                <div class="producto-nombre">RES</div>
+                <div class="precio">$17</div>
+            </div>
+
+            <input
+                class="cantidad"
+                id="res"
+                type="number"
+                min="0"
+                value="0"
+                inputmode="numeric"
+                onchange="actualizarProducto('res')"
+            >
+        </div>
+
+        <div class="modificaciones" id="mods-res">
+            <button onclick="modificar('res','sin cilantro',this)">SIN CILANTRO</button>
+            <button onclick="modificar('res','sin cebolla',this)">SIN CEBOLLA</button>
+            <button onclick="modificar('res','s/v',this)">S/V</button>
+        </div>
+    </div>
+
+    <h2>🥪 TORTAS</h2>
+
+    <div class="producto">
+        <div class="producto-top">
+            <div>
+                <div class="producto-nombre">TORTA ADO</div>
+                <div class="precio">$45</div>
+            </div>
+
+            <input
+                class="cantidad"
+                id="tortaAdo"
+                type="number"
+                min="0"
+                value="0"
+                inputmode="numeric"
+                onchange="actualizarProducto('tortaAdo')"
+            >
+        </div>
+
+        <div class="modificaciones" id="mods-tortaAdo">
+            <button onclick="modificar('tortaAdo','sin cilantro',this)">SIN CILANTRO</button>
+            <button onclick="modificar('tortaAdo','sin cebolla',this)">SIN CEBOLLA</button>
+            <button onclick="modificar('tortaAdo','s/v',this)">S/V</button>
+        </div>
+    </div>
+
+    <div class="producto">
+        <div class="producto-top">
+            <div>
+                <div class="producto-nombre">TORTA RES</div>
+                <div class="precio">$45</div>
+            </div>
+
+            <input
+                class="cantidad"
+                id="tortaRes"
+                type="number"
+                min="0"
+                value="0"
+                inputmode="numeric"
+                onchange="actualizarProducto('tortaRes')"
+            >
+        </div>
+
+        <div class="modificaciones" id="mods-tortaRes">
+            <button onclick="modificar('tortaRes','sin cilantro',this)">SIN CILANTRO</button>
+            <button onclick="modificar('tortaRes','sin cebolla',this)">SIN CEBOLLA</button>
+            <button onclick="modificar('tortaRes','s/v',this)">S/V</button>
+        </div>
+    </div>
+
+    <h2>🥤 BEBIDAS</h2>
+
+    <div class="producto">
+        <div class="producto-top">
+            <div>
+                <div class="producto-nombre">COCA</div>
+                <div class="precio">$25</div>
+            </div>
+            <input class="cantidad" id="coca" type="number" min="0" value="0" inputmode="numeric" onchange="actualizarProducto('coca')">
+        </div>
+    </div>
+
+    <div class="producto">
+        <div class="producto-top">
+            <div>
+                <div class="producto-nombre">SPRITE</div>
+                <div class="precio">$25</div>
+            </div>
+            <input class="cantidad" id="sprite" type="number" min="0" value="0" inputmode="numeric" onchange="actualizarProducto('sprite')">
+        </div>
+    </div>
+
+    <div class="producto">
+        <div class="producto-top">
+            <div>
+                <div class="producto-nombre">FANTA</div>
+                <div class="precio">$25</div>
+            </div>
+            <input class="cantidad" id="fanta" type="number" min="0" value="0" inputmode="numeric" onchange="actualizarProducto('fanta')">
+        </div>
+    </div>
+
+    <div class="producto">
+        <div class="producto-top">
+            <div>
+                <div class="producto-nombre">AGUA MINERAL</div>
+                <div class="precio">$25</div>
+            </div>
+            <input class="cantidad" id="agua" type="number" min="0" value="0" inputmode="numeric" onchange="actualizarProducto('agua')">
+        </div>
+    </div>
+
+    <div class="producto">
+        <div class="producto-top">
+            <div>
+                <div class="producto-nombre">CERVEZA</div>
+                <div class="precio">$25</div>
+            </div>
+            <input class="cantidad" id="cerveza" type="number" min="0" value="0" inputmode="numeric" onchange="actualizarProducto('cerveza')">
+        </div>
+    </div>
+
+    <div class="resumen">
+        <h2>PEDIDO</h2>
+        <div id="tipoResumen">MESA</div>
+        <div id="listaPedido">Todavía no hay productos.</div>
+        <div id="total" style="font-size:25px;font-weight:900;margin-top:10px;">
+            TOTAL: $0
+        </div>
+    </div>
+
+    <button class="enviar" onclick="enviarPedido()">
+        ENVIAR PEDIDO
+    </button>
+
+    <button class="limpiar" onclick="limpiarPedido()">
+        LIMPIAR PEDIDO
+    </button>
+
+    <div class="mensaje" id="mensaje"></div>
+
+</div>
+
+<script>
+const productos = {
+    ado:       {nombre:"ADO", precio:17, bebida:false},
+    res:       {nombre:"RES", precio:17, bebida:false},
+    tortaAdo:  {nombre:"TORTA ADO", precio:45, bebida:false},
+    tortaRes:  {nombre:"TORTA RES", precio:45, bebida:false},
+    coca:      {nombre:"COCA", precio:25, bebida:true},
+    sprite:    {nombre:"SPRITE", precio:25, bebida:true},
+    fanta:     {nombre:"FANTA", precio:25, bebida:true},
+    agua:      {nombre:"AGUA MINERAL", precio:25, bebida:true},
+    cerveza:   {nombre:"CERVEZA", precio:25, bebida:true}
+};
+
+let tipoPedido = "mesa";
+
+const modificaciones = {
+    ado: null,
+    res: null,
+    tortaAdo: null,
+    tortaRes: null
+};
+
+function seleccionarTipo(tipo){
+    tipoPedido = tipo;
+
+    document.getElementById("btnMesa").classList.toggle("activo", tipo === "mesa");
+    document.getElementById("btnLlevar").classList.toggle("activo", tipo === "llevar");
+
+    document.getElementById("mesaBox").classList.toggle("oculto", tipo !== "mesa");
+
+    actualizarResumen();
+}
+
+function actualizarProducto(id){
+    const input = document.getElementById(id);
+
+    let cantidad = parseInt(input.value);
+
+    if(isNaN(cantidad) || cantidad < 0){
+        cantidad = 0;
+    }
+
+    input.value = cantidad;
+
+    const mods = document.getElementById("mods-" + id);
+
+    if(mods){
+        mods.style.display = cantidad > 0 ? "flex" : "none";
+
+        if(cantidad === 0){
+            modificaciones[id] = null;
+
+            mods.querySelectorAll("button").forEach(btn => {
+                btn.classList.remove("seleccionado");
+            });
+        }
+    }
+
+    actualizarResumen();
+}
+
+function modificar(id, modificacion, boton){
+
+    const cantidad = parseInt(document.getElementById(id).value) || 0;
+
+    if(cantidad <= 0){
+        return;
+    }
+
+    modificaciones[id] =
+        modificaciones[id] === modificacion ? null : modificacion;
+
+    document
+        .getElementById("mods-" + id)
+        .querySelectorAll("button")
+        .forEach(btn => btn.classList.remove("seleccionado"));
+
+    if(modificaciones[id]){
+        boton.classList.add("seleccionado");
+    }
+
+    actualizarResumen();
+}
+
+function actualizarResumen(){
+
+    const lista = document.getElementById("listaPedido");
+    const tipoResumen = document.getElementById("tipoResumen");
+    const totalDiv = document.getElementById("total");
+
+    if(tipoPedido === "mesa"){
+        const mesa = document.getElementById("mesa").value;
+
+        tipoResumen.textContent =
+            mesa ? "MESA " + mesa : "MESA — falta número";
+    }else{
+        tipoResumen.textContent = "PARA LLEVAR";
+    }
+
+    let html = "";
+    let total = 0;
+    let hayProductos = false;
+
+    for(const id in productos){
+
+        const cantidad =
+            parseInt(document.getElementById(id).value) || 0;
+
+        if(cantidad > 0){
+
+            hayProductos = true;
+
+            const producto = productos[id];
+
+            let texto = cantidad + " " + producto.nombre;
+
+            if(modificaciones[id]){
+                texto += " (" + modificaciones[id] + ")";
+            }
+
+            html += "<div>" + texto + "</div>";
+
+            total += cantidad * producto.precio;
+        }
+    }
+
+    if(!hayProductos){
+        lista.innerHTML = "Todavía no hay productos.";
+    }else{
+        lista.innerHTML = html;
+    }
+
+    totalDiv.textContent = "TOTAL: $" + total;
+}
+
+function enviarPedido(){
+
+    const mensaje = document.getElementById("mensaje");
+
+    if(tipoPedido === "mesa"){
+
+        const mesa =
+            document.getElementById("mesa").value.trim();
+
+        if(!mesa){
+            mensaje.textContent = "Falta el número de mesa.";
+            return;
+        }
+    }
+
+    let hayProductos = false;
+
+    for(const id in productos){
+
+        const cantidad =
+            parseInt(document.getElementById(id).value) || 0;
+
+        if(cantidad > 0){
+            hayProductos = true;
+            break;
+        }
+    }
+
+    if(!hayProductos){
+        mensaje.textContent = "Agrega al menos un producto.";
+        return;
+    }
+
+    /*
+      ESTA ES SOLO LA VERSIÓN DE PRUEBA.
+      Todavía NO manda nada a Firebase.
+    */
+
+    mensaje.textContent =
+        "Pedido preparado para enviar. Firebase se conecta después.";
+
+    setTimeout(() => {
+        mensaje.textContent = "";
+    }, 3000);
+}
+
+function limpiarPedido(){
+
+    for(const id in productos){
+
+        const input = document.getElementById(id);
+
+        input.value = 0;
+
+        const mods = document.getElementById("mods-" + id);
+
+        if(mods){
+            mods.style.display = "none";
+
+            mods.querySelectorAll("button").forEach(btn => {
+                btn.classList.remove("seleccionado");
+            });
+        }
+
+        modificaciones[id] = null;
+    }
+
+    actualizarResumen();
+
+    document.getElementById("mensaje").textContent = "";
+}
+
+document
+    .getElementById("mesa")
+    .addEventListener("input", actualizarResumen);
+
+actualizarResumen();
+</script>
+
+</body>
+                                                        </html>
