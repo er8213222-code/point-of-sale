@@ -1166,12 +1166,168 @@ function actualizarTodo(seccion){
 
 function enviar(seccion){
 
-    let mensajeId=
-        seccion==="aqui"
+<script>
+function enviar(seccion){
+
+    let mensajeId =
+        seccion === "aqui"
         ? "mensajeAqui"
-        : seccion==="llevar"
+        : seccion === "llevar"
         ? "mensajeLlevar"
         : "mensajePedido";
 
-    const mensaje=
-        document.getElementBy
+    const mensaje =
+        document.getElementById(mensajeId);
+
+    if(seccion === "aqui"){
+
+        const mesa =
+            document.getElementById("mesa")
+            .value.trim();
+
+        if(!mesa){
+            mensaje.textContent = "falta la mesa.";
+            return;
+        }
+    }
+
+    if(seccion === "pedido"){
+
+        const ubicacion =
+            document.getElementById("ubicacion")
+            .value.trim();
+
+        if(!ubicacion){
+            mensaje.textContent = "falta la ubicación.";
+            return;
+        }
+    }
+
+    let hay = false;
+
+    productos.forEach(p => {
+
+        if(
+            parseInt(
+                estado[seccion][p.id].cantidad
+            ) > 0
+        ){
+            hay = true;
+        }
+
+    });
+
+    if(!hay){
+        mensaje.textContent = "agrega un producto.";
+        return;
+    }
+
+    mensaje.textContent = "pedido listo.";
+}
+
+
+/* GUARDAR TEMPORALMENTE */
+function guardar(){
+
+    try{
+
+        localStorage.setItem(
+            "taconazo_prueba",
+            JSON.stringify(estado)
+        );
+
+        localStorage.setItem(
+            "taconazo_mesa",
+            document.getElementById("mesa")?.value || ""
+        );
+
+        localStorage.setItem(
+            "taconazo_personas",
+            document.getElementById("personas")?.value || ""
+        );
+
+        localStorage.setItem(
+            "taconazo_ubicacion",
+            document.getElementById("ubicacion")?.value || ""
+        );
+
+    }catch(e){
+
+        console.log("No se pudo guardar");
+
+    }
+}
+
+
+/* CARGAR PEDIDO TEMPORAL */
+function cargar(){
+
+    try{
+
+        const guardado =
+            localStorage.getItem("taconazo_prueba");
+
+        if(guardado){
+
+            const datos =
+                JSON.parse(guardado);
+
+            ["aqui","llevar","pedido"]
+            .forEach(seccion => {
+
+                if(datos[seccion]){
+
+                    productos.forEach(p => {
+
+                        if(datos[seccion][p.id]){
+
+                            estado[seccion][p.id] =
+                                datos[seccion][p.id];
+
+                        }
+
+                    });
+
+                }
+
+            });
+
+        }
+
+        const mesa =
+            localStorage.getItem("taconazo_mesa");
+
+        const personas =
+            localStorage.getItem("taconazo_personas");
+
+        const ubicacion =
+            localStorage.getItem("taconazo_ubicacion");
+
+        if(mesa){
+            document.getElementById("mesa").value = mesa;
+        }
+
+        if(personas){
+            document.getElementById("personas").value = personas;
+        }
+
+        if(ubicacion){
+            document.getElementById("ubicacion").value = ubicacion;
+        }
+
+    }catch(e){
+
+        console.log("No se pudo cargar");
+
+    }
+}
+
+
+/* INICIAR */
+cargar();
+
+["aqui","llevar","pedido"].forEach(seccion => {
+    actualizarTodo(seccion);
+});
+
+</script>
