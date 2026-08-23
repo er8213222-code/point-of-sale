@@ -325,6 +325,7 @@ cantidad:cantidades[id]
 });
 
 }
+
 }
 
 if(!pedido.length){
@@ -332,11 +333,13 @@ if(!pedido.length){
 alert("Agrega al menos un producto.");
 
 return;
-}
-
-alert("Pedido preparado.");
 
 }
+
+window.guardarPedido(pedido);
+
+}
+
 
 </script>
 
