@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>El Taconazo</title>
+
+<style>
+*{box-sizing:border-box}
+
+body{
+    margin:0;
+    background:#080808;
+    color:white;
+    font-family:Arial,sans-serif;
+}
+
+header{
+    background:#000;
+    color:#ffd400;
+    text-align:center;
+    padding:15px 10px;
+    font-size:28px;
+    font-weight:900;
+    border-bottom:2px solid #ffd400;
+}
+
+.contenedor{
+    max-width:850px;
+    margin:auto;
+    padding:12px;
+}
+
+.menu{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:6px;
+    margin-bottom:15px;
+    position:sticky;
+    top:0;
+    z-index:10;
+    background:#080808;
+    padding-bottom:8px;
+}
+
+.menu button{
+    border:1px solid #444;
+    background:#151515;
+    color:white;
+    border-radius:9px;
+    padding:13px 5px;
+    font-size:16px;
+    font-weight:900;
+}
+
+.menu button.activo{
+    background:#ffd400;
+    color:#000;
+    border-color:#ffd400;
+}
+
+.seccion{
+    display:none;
+}
+
+.seccion.activa{
+    display:block;
+}
+
+.titulo{
+    color:#ffd400;
+    font-size:23px;
+    font-weight:900;
+    margin:8px 0 12px;
+}
+
+.caja{
+    background:#151515;
+    border:1px solid #292929;
+    border-radius:12px;
+    padding:12px;
+    margin-bottom:12px;
+}
+
+.caja label{
+    display:block;
+    font-weight:900;
+    margin-bottom:7px;
+}
+
+.caja input{
+    width:100%;
+    padding:11px;
+    background:#000;
+    color:white;
+    border:2px solid #555;
+    border-radius:8px;
+    font-size:19px;
+    font-weight:900;
+}
+
+.producto{
+    background:#151515;
+    border:1px solid #292929;
+    border-radius:12px;
+    padding:9px;
+    margin-bottom:7px;
+}
+
+.linea{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:8px;
+}
+
+.nombre{
+    font-size:19px;
+    font-weight:900;
+}
+
+.controles{
+    display:flex;
+    align-items:center;
+    gap:4px;
+}
+
+.cantidad{
+    width:60px;
+    height:40px;
+    background:#000;
+    color:white;
+    border:2px solid #555;
+    border-radius:7px;
+    text-align:center;
+    font-size:19px;
+    font-weight:900;
+}
+
+.mas,.menos{
+    width:40px;
+    height:40px;
+    border:0;
+    border-radius:7px;
+    font-size:24px;
+    font-weight:900;
+}
+
+.mas{
+    background:#ffd400;
+    color:#000;
+}
+
+.menos{
+    background:#333;
+    color:white;
+}
+
+.opciones{
+    display:none;
+    flex-wrap:wrap;
+    gap:5px;
+    margin-top:7px;
+}
+
+.opciones button{
+    background:#0e0e0e;
+    color:white;
+    border:1px solid #555;
+    border-radius:7px;
+    padding:6px 9px;
+    font-size:12px;
+    font-weight:900;
+}
+
+.opciones button.activo{
+    background:#ffd400;
+    color:#000;
+    border-color:#ffd400;
+}
+
+.bebidas{
+    margin-top:18px;
+}
+
+.subtitulo{
+    color:#ffd400;
+    font-size:18px;
+    font-weight:900;
+    margin-bottom:8px;
+}
+
+.resumen{
+    background:#000;
+    border:1px solid #333;
+    border-radius:12px;
+    padding:12px;
+    margin-top:15px;
+}
+
+.resumen-titulo{
+    color:#ffd400;
+    font-size:19px;
+    font-weight:900;
+    margin-bottom:7px;
+}
+
+.resumen-linea{
+    padding:3px 0;
+    font-size:16px;
+}
+
+.acciones{
+    display:flex;
+    gap:7px;
+    margin-top:12px;
+}
+
+.vaciar{
+    background:#151515;
+    color:white;
+    border:2px solid #555;
+    border-radius:10px;
+    padding:14px 12px;
+    font-weight:900;
+}
+
+.mandar{
+    flex:1;
+    background:#e30613;
+    color:white;
+    border:0;
+    border-radius:10px;
+    padding:14px;
+    font-size:19px;
+    font-weight:900;
+}
+
+.mensaje{
+    text-align:center;
+    color:#ffd400;
+    font-weight:900;
+    min-height:20px;
+    margin-top:8px;
+}
+
+.marca{
+    text-align:right;
+    color:#555;
+    font-size:9px;
+    margin-top:18px;
+}
+</style>
+</head>
+
+<body>
+
+<header>🌮 EL TACONAZO</header>
+
+<div class="contenedor">
+
+<div class="menu">
+
+<button id="btnAqui"
+class="activo"
+onclick="cambiarSeccion('aqui')">
+aquí
+</button>
+
+<button id="btnLlevar"
+onclick="cambiarSeccion('llevar')">
+llevar
+</button>
+
+<button id="btnPedido"
+onclick="cambiarSeccion('pedido')">
+pedido
+</button>
+
+</div>
+
+
+<!-- AQUÍ -->
+
+<section id="aqui" class="seccion activa">
+
+<div class="titulo">aquí</div>
+
+<div class="caja">
+
+<label>mesa</label>
+
+<input id="mesa"
+type="number"
+min="1"
+inputmode="numeric"
+placeholder="número de mesa">
+
+</div>
+
+<div id="productosAqui"></div>
+
+<div class="bebidas">
+
+<div class="subtitulo">bebidas</div>
+
+<div id="bebidasAqui"></div>
+
+</div>
+
+<div class="resumen">
+
+<div class="resumen-titulo">
+pedido
+</div>
+
+<div id="resumenAqui">
+todavía no hay productos.
+</div>
+
+</div>
+
+<div class="acciones">
+
+<button class="vaciar"
+onclick="vaciar('aqui')">
+vaciar
+</button>
+
+<button class="mandar"
+onclick="mandar('aqui')">
+MANDAR
+</button>
+
+</div>
+
+<div id="mensajeAqui" class="mensaje"></div>
+
+</section>
+
+
+<!-- LLEVAR -->
+
+<section id="llevar" class="seccion">
+
+<div class="titulo">llevar</div>
+
+<div id="productosLlevar"></div>
+
+<div class="bebidas">
+
+<div class="subtitulo">bebidas</div>
+
+<div id="bebidasLlevar"></div>
+
+</div>
+
+<div class="resumen">
+
+<div class="resumen-titulo">
+pedido
+</div>
+
+<div id="resumenLlevar">
+todavía no hay productos.
+</div>
+
+</div>
+
+<div class="acciones">
+
+<button class="vaciar"
+onclick="vaciar('llevar')">
+vaciar
+</button>
+
+<button class="mandar"
+onclick="mandar('llevar')">
+MANDAR
+</button>
+
+</div>
+
+<div id="mensajeLlevar" class="mensaje"></div>
+
+</section>
+
+
+<!-- PEDIDO -->
+
+<section id="pedido" class="seccion">
+
+<div class="titulo">pedido</div>
+
+<div id="productosPedido"></div>
+
+<div class="bebidas">
+
+<div class="subtitulo">bebidas</div>
+
+<div id="bebidasPedido"></div>
+
+</div>
+
+<div class="caja">
+
+<label>domicilio</label>
+
+<input id="domicilio"
+type="text"
+placeholder="calle, colonia o negocio">
+
+</div>
+
+<div class="resumen">
+
+<div class="resumen-titulo">
+pedido
+</div>
+
+<div id="resumenPedido">
+todavía no hay productos.
+</div>
+
+</div>
+
+<div class="acciones">
+
+<button class="vaciar"
+onclick="vaciar('pedido')">
+vaciar
+</button>
+
+<button class="mandar"
+onclick="mandar('pedido')">
+MANDAR
+</button>
+
+</div>
+
+<div id="mensajePedido" class="mensaje"></div>
+
+</section>
+
+
+<div class="marca">
+By: Emiliano Studios ®
+</div>
+
+</div>
+
+
+<script>
+
+const tacos=[
+    {id:"ado",nombre:"taco ado"},
+    {id:"res",nombre:"taco res"}
+];
+
+const bebidas=[
+    {id:"coca",nombre:"coca"},
+    {id:"sprite",nombre:"sprite"},
+    {id:"fanta",nombre:"fanta"},
+    {id:"agua",nombre:"agua"}
+];
+
+const estado={
+    aqui:{},
+    llevar:{},
+    pedido:{}
+};
+
+function prepararEstado(){
+
+    ["aqui","llevar","pedido"].forEach(seccion=>{
+
+        estado[seccion]={};
+
+        tacos.forEach(taco=>{
+
+            estado[seccion][taco.id]={
+                cantidad:"",
+                harina:false,
+                sc:false,
+                sceb:false
+            };
+
+        });
+
+        bebidas.forEach(bebida=>{
+
+            estado[seccion][bebida.id]={
+                cantidad:""
+            };
+
+        });
+
+    });
+}
+
+prepararEstado();
+
+
+function cambiarSeccion(seccion){
+
+    document.querySelectorAll(".seccion")
+    .forEach(elemento=>{
+        elemento.classList.remove("activa");
+    });
+
+    document.getElementById(seccion)
+    .classList.add("activa");
+
+    document.querySelectorAll(".menu button")
+    .forEach(boton=>{
+        boton.classList.remove("activo");
+    });
+
+    if(seccion==="aqui")
+        document.getElementById("btnAqui")
+        .classList.add("activo");
+
+    if(seccion==="llevar")
+        document.getElementById("btnLlevar")
+        .classList.add("activo");
+
+    if(seccion==="pedido")
+        document.getElementById("btnPedido")
+        .classList.add("activo");
+
+    actualizarTodo(seccion);
+}
+
+
+function crearTacos(){
+
+    const destinos={
+        aqui:document.getElementById("productosAqui"),
+        llevar:document.getElementById("productosLlevar"),
+        pedido:document.getElementById("productosPedido")
+    };
+
+    ["aqui","llevar","pedido"].forEach(seccion=>{
+
+        tacos.forEach(taco=>{
+
+            const div=document.createElement("div");
+
+            div.className="producto";
+
+            div.innerHTML=`
+
+<div class="linea">
+
+<div class="nombre">
+${taco.nombre}
+</div>
+
+<div class="controles">
+
+<button class="menos"
+onclick="cambiarCantidad('${seccion}','${taco.id}',-1)">
+−
+</button>
+
+<input
+id="${seccion}-${taco.id}"
+class="cantidad"
+type="number"
+min="1"
+inputmode="numeric"
+onchange="cantidadManual('${seccion}','${taco.id}',this.value)">
+
+<button class="mas"
+onclick="cambiarCantidad('${seccion}','${taco.id}',1)">
++
+</button>
+
+</div>
+
+</div>
+
+<div id="${seccion}-${taco.id}-opciones"
+class="opciones">
+
+<button id="${seccion}-${taco.id}-harina"
+onclick="seleccionarHarina('${seccion}','${taco.id}')">
+harina
+</button>
+
+<button id="${seccion}-${taco.id}-sc"
+onclick="seleccionarVerdura('${seccion}','${taco.id}','sc')">
+s/c
+</button>
+
+<button id="${seccion}-${taco.id}-sceb"
+onclick="seleccionarVerdura('${seccion}','${taco.id}','sceb')">
+s/ceb
+</button>
+
+<button id="${seccion}-${taco.id}-sv"
+onclick="seleccionarSinVerdura('${seccion}','${taco.id}')">
+s/v
+</button>
+
+</div>
+`;
+
+            destinos[seccion].appendChild(div);
+
+        });
+
+    });
+}
+
+
+function crearBebidas(){
+
+    const destinos={
+        aqui:document.getElementById("bebidasAqui"),
+        llevar:document.getElementById("bebidasLlevar"),
+        pedido:document.getElementById("bebidasPedido")
+    };
+
+    ["aqui","llevar","pedido"].forEach(seccion=>{
+
+        bebidas.forEach(bebida=>{
+
+            const div=document.createElement("div");
+
+            div.className="producto";
+
+            div.innerHTML=`
+
+<div class="linea">
+
+<div class="nombre">
+${bebida.nombre}
+</div>
+
+<div class="controles">
+
+<button class="menos"
+onclick="cambiarCantidad('${seccion}','${bebida.id}',-1)">
+−
+</button>
+
+<input
+id="${seccion}-${bebida.id}"
+class="cantidad"
+type="number"
+min="1"
+inputmode="numeric"
+onchange="cantidadManual('${seccion}','${bebida.id}',this.value)">
+
+<button class="mas"
+onclick="cambiarCantidad('${seccion}','${bebida.id}',1)">
++
+</button>
+
+</div>
+
+</div>
+`;
+
+            destinos[seccion].appendChild(div);
+
+        });
+
+    });
+}
+
+
+function cambiarCantidad(seccion,id,cambio){
+
+    let cantidad=
+        parseInt(estado[seccion][id].cantidad)||0;
+
+    cantidad+=cambio;
+
+    if(cantidad<0)
+        cantidad=0;
+
+    estado[seccion][id].cantidad=
+        cantidad===0 ? "" : String(cantidad);
+
+    actualizarProducto(seccion,id);
+    actualizarResumen(seccion);
+}
+
+
+function cantidadManual(seccion,id,valor){
+
+    let cantidad=parseInt(valor);
+
+    if(isNaN(cantidad)||cantidad<=0)
+        estado[seccion][id].cantidad="";
+    else
+        estado[seccion][id].cantidad=String(cantidad);
+
+    actualizarProducto(seccion,id);
+    actualizarResumen(seccion);
+}
+
+
+function actualizarProducto(seccion,id){
+
+    const datos=estado[seccion][id];
+
+    const input=document.getElementById(
+        `${seccion}-${id}`
+    );
+
+    if(input)
+        input.value=datos.cantidad;
+
+    const opciones=document.getElementById(
+        `${seccion}-${id}-opciones`
+    );
+
+    if(opciones){
+
+        if(parseInt(datos.cantidad)>0){
+
+            opciones.style.display="flex";
+
+        }else{
+
+            opciones.style.display="none";
+
+            datos.harina=false;
+            datos.sc=false;
+            datos.sceb=false;
+        }
+    }
+
+    actualizarBotones(seccion,id);
+}
+
+
+function seleccionarHarina(seccion,id){
+
+    estado[seccion][id].harina=
+        !estado[seccion][id].harina;
+
+    actualizarBotones(seccion,id);
+    actualizarResumen(seccion);
+}
+
+
+function seleccionarVerdura(seccion,id,opcion){
+
+    const datos=estado[seccion][id];
+
+    if(opcion==="sc")
+        datos.sc=!datos.sc;
+
+    if(opcion==="sceb")
+        datos.sceb=!datos.sceb;
+
+    actualizarBotones(seccion,id);
+    actualizarResumen(seccion);
+}
+
+
+function seleccionarSinVerdura(seccion,id){
+
+    const datos=estado[seccion][id];
+
+    const activar=
+        !(datos.sc && datos.sceb);
+
+    datos.sc=activar;
+    datos.sceb=activar;
+
+    actualizarBotones(seccion,id);
+    actualizarResumen(seccion);
+}
+
+
+function actualizarBotones(seccion,id){
+
+    const datos=estado[seccion][id];
+
+    const harina=document.getElementById(
+        `${seccion}-${id}-harina`
+    );
+
+    const sc=document.getElementById(
+        `${seccion}-${id}-sc`
+    );
+
+    const sceb=document.getElementById(
+        `${seccion}-${id}-sceb`
+    );
+
+    const sv=document.getElementById(
+        `${seccion}-${id}-sv`
+    );
+
+    if(harina)
+        harina.classList.toggle("activo",datos.harina);
+
+    if(sc)
+        sc.classList.toggle("activo",datos.sc);
+
+    if(sceb)
+        sceb.classList.toggle("activo",datos.sceb);
+
+    if(sv)
+        sv.classList.toggle(
+            "activo",
+            datos.sc && datos.sceb
+        );
+}
+
+
+function actualizarResumen(seccion){
+
+    let html="";
+    let hay=false;
+
+    tacos.forEach(taco=>{
+
+        const datos=estado[seccion][taco.id];
+
+        const cantidad=parseInt(datos.cantidad)||0;
+
+        if(cantidad>0){
+
+            hay=true;
+
+            let extras=[];
+
+            if(datos.harina)
+                extras.push("harina");
+
+            if(datos.sc && datos.sceb){
+
+                extras.push("s/v");
+
+            }else{
+
+                if(datos.sc)
+                    extras.push("s/c");
+
+                if(datos.sceb)
+                    extras.push("s/ceb");
+
+            }
+
+            html+=`
+
+<div class="resumen-linea">
+${cantidad} ${taco.nombre}
+${extras.length ? " — "+extras.join(" — ") : ""}
+</div>
+
+`;
+        }
+    });
+
+
+    bebidas.forEach(bebida=>{
+
+        const datos=estado[seccion][bebida.id];
+
+        const cantidad=parseInt(datos.cantidad)||0;
+
+        if(cantidad>0){
+
+            hay=true;
+
+            html+=`
+
+<div class="resumen-linea">
+${cantidad} ${bebida.nombre}
+</div>
+
+`;
+        }
+
+    });
+
+
+    const destino=
+        seccion==="aqui"
+        ? "resumenAqui"
+        : seccion==="llevar"
+        ? "resumenLlevar"
+        : "resumenPedido";
+
+    document.getElementById(destino).innerHTML=
+        hay ? html : "todavía no hay productos.";
+}
+
+
+function actualizarTodo(seccion){
+
+    tacos.forEach(taco=>{
+        actualizarProducto(seccion,taco.id);
+    });
+
+    bebidas.forEach(bebida=>{
+        actualizarProducto(seccion,bebida.id);
+    });
+
+    actualizarResumen(seccion);
+}
+
+
+function vaciar(seccion){
+
+    tacos.forEach(taco=>{
+
+        estado[seccion][taco.id]={
+            cantidad:"",
+            harina:false,
+            sc:false,
+            sceb:false
+        };
+
+    });
+
+    bebidas.forEach(bebida=>{
+
+        estado[seccion][bebida.id]={
+            cantidad:""
+        };
+
+    });
+
+
+    if(seccion==="aqui")
+        document.getElementById("mesa").value="";
+
+    if(seccion==="pedido")
+        document.getElementById("domicilio").value="";
+
+
+    actualizarTodo(seccion);
+
+    const mensaje=
+        document.getElementById(
+            seccion==="aqui"
+            ? "mensajeAqui"
+            : seccion==="llevar"
+            ? "mensajeLlevar"
+            : "mensajePedido"
+        );
+
+    mensaje.textContent="pedido vaciado.";
+
+    setTimeout(()=>{
+        mensaje.textContent="";
+    },1200);
+}
+
+
+function mandar(seccion){
+
+    const mensaje=
+        document.getElementById(
+            seccion==="aqui"
+            ? "mensajeAqui"
+            : seccion==="llevar"
+            ? "mensajeLlevar"
+            : "mensajePedido"
+        );
+
+
+    let hay=false;
+
+    tacos.forEach(taco=>{
+
+        if(parseInt(
+            estado[seccion][taco.id].cantidad
+        )>0)
+            hay=true;
+
+    });
+
+    bebidas.forEach(bebida=>{
+
+        if(parseInt(
+            estado[seccion][bebida.id].cantidad
+        )>0)
+            hay=true;
+
+    });
+
+
+    if(!hay){
+
+        mensaje.textContent=
+            "agrega productos.";
+
+        return;
+    }
+
+
+    if(seccion==="aqui"){
+
+        const mesa=
+            document.getElementById("mesa")
+            .value.trim();
+
+        if(!mesa){
+
+            mensaje.textContent=
+                "agrega la mesa.";
+
+            return;
+        }
+    }
+
+
+    if(seccion==="pedido"){
+
+        const domicilio=
+            document.getElementById("domicilio")
+            .value.trim();
+
+        if(!domicilio){
+
+            mensaje.textContent=
+                "agrega el domicilio.";
+
+            return;
+        }
+    }
+
+
+    mensaje.textContent=
+        "pedido listo para mandar.";
+}
+
+
+crearTacos();
+crearBebidas();
+actualizarTodo("aqui");
+
+</script>
+
+</body>
+  </html>
