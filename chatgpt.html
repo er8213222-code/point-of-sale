@@ -1,0 +1,2069 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>El Taconazo</title>
+
+<style>
+
+*{
+box-sizing:border-box;
+}
+
+body{
+margin:0;
+background:#080808;
+color:white;
+font-family:Arial,sans-serif;
+}
+
+header{
+background:#000;
+color:#ffd400;
+text-align:center;
+padding:15px 10px;
+font-size:28px;
+font-weight:900;
+border-bottom:2px solid #ffd400;
+}
+
+.contenedor{
+max-width:850px;
+margin:auto;
+padding:12px;
+}
+
+.menu{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:5px;
+margin-bottom:15px;
+position:sticky;
+top:0;
+z-index:20;
+background:#080808;
+padding-bottom:8px;
+}
+
+.menu button{
+border:1px solid #444;
+background:#151515;
+color:white;
+border-radius:9px;
+padding:13px 3px;
+font-size:14px;
+font-weight:900;
+}
+
+.menu button.activo{
+background:#ffd400;
+color:#000;
+border-color:#ffd400;
+}
+
+.seccion{
+display:none;
+}
+
+.seccion.activa{
+display:block;
+}
+
+.titulo{
+color:#ffd400;
+font-size:23px;
+font-weight:900;
+margin:8px 0 12px;
+}
+
+.caja{
+background:#151515;
+border:1px solid #292929;
+border-radius:12px;
+padding:12px;
+margin-bottom:12px;
+}
+
+.caja label{
+display:block;
+font-weight:900;
+margin-bottom:7px;
+}
+
+.caja input{
+width:100%;
+padding:11px;
+background:#000;
+color:white;
+border:2px solid #555;
+border-radius:8px;
+font-size:19px;
+font-weight:900;
+}
+
+.producto{
+background:#151515;
+border:1px solid #292929;
+border-radius:12px;
+padding:9px;
+margin-bottom:7px;
+}
+
+.linea{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:8px;
+}
+
+.nombre{
+font-size:18px;
+font-weight:900;
+}
+
+.controles{
+display:flex;
+align-items:center;
+gap:4px;
+}
+
+.cantidad{
+width:60px;
+height:40px;
+background:#000;
+color:white;
+border:2px solid #555;
+border-radius:7px;
+text-align:center;
+font-size:19px;
+font-weight:900;
+}
+
+.mas,
+.menos{
+width:40px;
+height:40px;
+border:0;
+border-radius:7px;
+font-size:24px;
+font-weight:900;
+}
+
+.mas{
+background:#ffd400;
+color:#000;
+}
+
+.menos{
+background:#333;
+color:white;
+}
+
+.opciones{
+display:none;
+flex-wrap:wrap;
+gap:5px;
+margin-top:7px;
+}
+
+.opciones button{
+background:#0e0e0e;
+color:white;
+border:1px solid #555;
+border-radius:7px;
+padding:6px 9px;
+font-size:12px;
+font-weight:900;
+}
+
+.opciones button.activo{
+background:#ffd400;
+color:#000;
+}
+
+.subtitulo{
+color:#ffd400;
+font-size:18px;
+font-weight:900;
+margin:18px 0 8px;
+}
+
+.resumen{
+background:#000;
+border:1px solid #333;
+border-radius:12px;
+padding:12px;
+margin-top:15px;
+}
+
+.resumen-titulo{
+color:#ffd400;
+font-size:19px;
+font-weight:900;
+margin-bottom:7px;
+}
+
+.resumen-linea{
+padding:3px 0;
+font-size:16px;
+}
+
+.acciones{
+display:flex;
+gap:7px;
+margin-top:12px;
+}
+
+.vaciar{
+background:#151515;
+color:white;
+border:2px solid #555;
+border-radius:10px;
+padding:14px 12px;
+font-weight:900;
+}
+
+.mandar{
+flex:1;
+background:#e30613;
+color:white;
+border:0;
+border-radius:10px;
+padding:14px;
+font-size:19px;
+font-weight:900;
+}
+
+.mensaje{
+text-align:center;
+color:#ffd400;
+font-weight:900;
+min-height:20px;
+margin-top:8px;
+}
+
+.marca{
+text-align:right;
+color:#555;
+font-size:9px;
+margin-top:18px;
+}
+
+
+/* HISTORIAL */
+
+.historial-item{
+background:#151515;
+border:1px solid #333;
+border-radius:12px;
+padding:12px;
+margin-bottom:10px;
+}
+
+.historial-cabeza{
+display:flex;
+justify-content:space-between;
+gap:10px;
+font-weight:900;
+margin-bottom:8px;
+}
+
+.numero-pedido{
+color:#ffd400;
+font-size:20px;
+}
+
+.tipo-pedido{
+font-size:14px;
+color:#aaa;
+}
+
+.dato-historial{
+font-size:14px;
+margin:4px 0;
+}
+
+.productos-historial{
+margin-top:8px;
+border-top:1px solid #333;
+padding-top:8px;
+}
+
+.vacio{
+text-align:center;
+color:#888;
+padding:30px 10px;
+}
+
+.botones-historial{
+margin-top:25px;
+padding-top:15px;
+border-top:2px solid #333;
+}
+
+.botones-historial button{
+width:100%;
+padding:14px;
+margin-bottom:8px;
+border-radius:10px;
+font-size:15px;
+font-weight:900;
+}
+
+.borrar-pedidos{
+background:#e30613;
+color:white;
+border:0;
+}
+
+.borrar-dispositivo{
+background:#151515;
+color:white;
+border:2px solid #555;
+}
+
+</style>
+</head>
+
+
+<body>
+
+<header>
+🌮 EL TACONAZO
+</header>
+
+
+<div class="contenedor">
+
+
+<div class="menu">
+
+<button
+id="btnAqui"
+class="activo"
+onclick="cambiarSeccion('aqui')">
+aquí
+</button>
+
+<button
+id="btnLlevar"
+onclick="cambiarSeccion('llevar')">
+llevar
+</button>
+
+<button
+id="btnPedido"
+onclick="cambiarSeccion('pedido')">
+pedido
+</button>
+
+<button
+id="btnHistorial"
+onclick="cambiarSeccion('historial')">
+historial
+</button>
+
+</div>
+
+
+
+<!-- ================= AQUÍ ================= -->
+
+<section
+id="aqui"
+class="seccion activa">
+
+<div class="titulo">
+aquí
+</div>
+
+
+<div class="caja">
+
+<label>
+mesa
+</label>
+
+<input
+id="mesa"
+type="number"
+min="1"
+inputmode="numeric"
+placeholder="número de mesa">
+
+</div>
+
+
+<div id="productosAqui"></div>
+
+
+<div class="subtitulo">
+bebidas
+</div>
+
+<div id="bebidasAqui"></div>
+
+
+<div class="resumen">
+
+<div class="resumen-titulo">
+pedido
+</div>
+
+<div id="resumenAqui">
+todavía no hay productos.
+</div>
+
+</div>
+
+
+<div class="acciones">
+
+<button
+class="vaciar"
+onclick="vaciar('aqui')">
+vaciar
+</button>
+
+<button
+class="mandar"
+onclick="mandar('aqui')">
+MANDAR
+</button>
+
+</div>
+
+
+<div
+id="mensajeAqui"
+class="mensaje">
+</div>
+
+</section>
+
+
+
+<!-- ================= LLEVAR ================= -->
+
+<section
+id="llevar"
+class="seccion">
+
+<div class="titulo">
+llevar
+</div>
+
+
+<div id="productosLlevar"></div>
+
+
+<div class="subtitulo">
+bebidas
+</div>
+
+<div id="bebidasLlevar"></div>
+
+
+<div class="resumen">
+
+<div class="resumen-titulo">
+pedido
+</div>
+
+<div id="resumenLlevar">
+todavía no hay productos.
+</div>
+
+</div>
+
+
+<div class="acciones">
+
+<button
+class="vaciar"
+onclick="vaciar('llevar')">
+vaciar
+</button>
+
+<button
+class="mandar"
+onclick="mandar('llevar')">
+MANDAR
+</button>
+
+</div>
+
+
+<div
+id="mensajeLlevar"
+class="mensaje">
+</div>
+
+</section>
+
+
+
+<!-- ================= PEDIDO ================= -->
+
+<section
+id="pedido"
+class="seccion">
+
+<div class="titulo">
+pedido
+</div>
+
+
+<div id="productosPedido"></div>
+
+
+<div class="subtitulo">
+bebidas
+</div>
+
+<div id="bebidasPedido"></div>
+
+
+<div class="caja">
+
+<label>
+domicilio
+</label>
+
+<input
+id="domicilio"
+type="text"
+placeholder="calle, colonia o negocio">
+
+</div>
+
+
+<div class="resumen">
+
+<div class="resumen-titulo">
+pedido
+</div>
+
+<div id="resumenPedido">
+todavía no hay productos.
+</div>
+
+</div>
+
+
+<div class="acciones">
+
+<button
+class="vaciar"
+onclick="vaciar('pedido')">
+vaciar
+</button>
+
+<button
+class="mandar"
+onclick="mandar('pedido')">
+MANDAR
+</button>
+
+</div>
+
+
+<div
+id="mensajePedido"
+class="mensaje">
+</div>
+
+</section>
+
+
+
+<!-- ================= HISTORIAL ================= -->
+
+<section
+id="historial"
+class="seccion">
+
+<div class="titulo">
+historial
+</div>
+
+
+<div id="listaHistorial">
+
+<div class="vacio">
+no hay pedidos todavía.
+</div>
+
+</div>
+
+
+<div class="botones-historial">
+
+
+<button
+class="borrar-pedidos"
+onclick="borrarPedidos()">
+🗑️ borrar pedidos
+</button>
+
+
+<button
+class="borrar-dispositivo"
+onclick="borrarHistorialTV()">
+📺 borrar historial de la TV
+</button>
+
+
+<button
+class="borrar-dispositivo"
+onclick="borrarHistorialTelefono()">
+📱 borrar historial del teléfono
+</button>
+
+
+</div>
+
+</section>
+
+
+
+<div class="marca">
+By: Emiliano Studios ®
+</div>
+
+
+</div>
+
+
+
+<script>
+
+
+/* ================= PRODUCTOS ================= */
+
+
+const productos=[
+
+{
+id:"tacoAdo",
+nombre:"taco ADO"
+},
+
+{
+id:"tacoRes",
+nombre:"taco RES"
+},
+
+{
+id:"tortaAdo",
+nombre:"torta ADO"
+},
+
+{
+id:"tortaRes",
+nombre:"torta RES"
+}
+
+];
+
+
+const bebidas=[
+
+{
+id:"coca",
+nombre:"coca"
+},
+
+{
+id:"sprite",
+nombre:"sprite"
+},
+
+{
+id:"fanta",
+nombre:"fanta"
+},
+
+{
+id:"agua",
+nombre:"agua"
+}
+
+];
+
+
+
+/* ================= ESTADO ================= */
+
+
+const estado={
+aqui:{},
+llevar:{},
+pedido:{}
+};
+
+
+function prepararEstado(){
+
+["aqui","llevar","pedido"]
+.forEach(seccion=>{
+
+estado[seccion]={};
+
+
+productos.forEach(p=>{
+
+estado[seccion][p.id]={
+
+cantidad:"",
+harina:false,
+sc:false,
+sceb:false
+
+};
+
+});
+
+
+bebidas.forEach(p=>{
+
+estado[seccion][p.id]={
+
+cantidad:""
+
+};
+
+});
+
+});
+
+}
+
+
+prepararEstado();
+
+
+
+/* ================= CAMBIAR SECCIÓN ================= */
+
+
+function cambiarSeccion(seccion){
+
+document
+.querySelectorAll(".seccion")
+.forEach(e=>{
+e.classList.remove("activa");
+});
+
+
+document
+.getElementById(seccion)
+.classList.add("activa");
+
+
+document
+.querySelectorAll(".menu button")
+.forEach(e=>{
+e.classList.remove("activo");
+});
+
+
+if(seccion==="aqui")
+btnAqui.classList.add("activo");
+
+
+if(seccion==="llevar")
+btnLlevar.classList.add("activo");
+
+
+if(seccion==="pedido")
+btnPedido.classList.add("activo");
+
+
+if(seccion==="historial"){
+
+btnHistorial.classList.add("activo");
+
+mostrarHistorial();
+
+}else{
+
+actualizarTodo(seccion);
+
+}
+
+}
+
+
+
+/* ================= CREAR PRODUCTOS ================= */
+
+
+function crearProductos(){
+
+const destinos={
+
+aqui:"productosAqui",
+llevar:"productosLlevar",
+pedido:"productosPedido"
+
+};
+
+
+["aqui","llevar","pedido"]
+.forEach(seccion=>{
+
+
+productos.forEach(p=>{
+
+
+const div=
+document.createElement("div");
+
+
+div.className="producto";
+
+
+div.innerHTML=`
+
+<div class="linea">
+
+<div class="nombre">
+
+${p.nombre}
+
+</div>
+
+
+<div class="controles">
+
+<button
+class="menos"
+onclick="
+cambiarCantidad(
+'${seccion}',
+'${p.id}',
+-1
+)">
+−
+</button>
+
+
+<input
+id="${seccion}-${p.id}"
+class="cantidad"
+type="number"
+min="1"
+inputmode="numeric"
+onchange="
+cantidadManual(
+'${seccion}',
+'${p.id}',
+this.value
+)">
+
+
+<button
+class="mas"
+onclick="
+cambiarCantidad(
+'${seccion}',
+'${p.id}',
+1
+)">
++
+</button>
+
+</div>
+
+</div>
+
+
+<div
+id="${seccion}-${p.id}-opciones"
+class="opciones">
+
+
+<button
+id="${seccion}-${p.id}-harina"
+onclick="
+seleccionarHarina(
+'${seccion}',
+'${p.id}'
+)">
+harina
+</button>
+
+
+<button
+id="${seccion}-${p.id}-sc"
+onclick="
+seleccionarVerdura(
+'${seccion}',
+'${p.id}',
+'sc'
+)">
+s/c
+</button>
+
+
+<button
+id="${seccion}-${p.id}-sceb"
+onclick="
+seleccionarVerdura(
+'${seccion}',
+'${p.id}',
+'sceb'
+)">
+s/ceb
+</button>
+
+
+<button
+id="${seccion}-${p.id}-sv"
+onclick="
+seleccionarSinVerdura(
+'${seccion}',
+'${p.id}'
+)">
+s/v
+</button>
+
+
+</div>
+
+`;
+
+
+document
+.getElementById(destinos[seccion])
+.appendChild(div);
+
+
+});
+
+});
+
+}
+
+
+
+/* ================= BEBIDAS ================= */
+
+
+function crearBebidas(){
+
+const destinos={
+
+aqui:"bebidasAqui",
+llevar:"bebidasLlevar",
+pedido:"bebidasPedido"
+
+};
+
+
+["aqui","llevar","pedido"]
+.forEach(seccion=>{
+
+
+bebidas.forEach(p=>{
+
+
+const div=
+document.createElement("div");
+
+
+div.className="producto";
+
+
+div.innerHTML=`
+
+<div class="linea">
+
+<div class="nombre">
+
+${p.nombre}
+
+</div>
+
+
+<div class="controles">
+
+<button
+class="menos"
+onclick="
+cambiarCantidad(
+'${seccion}',
+'${p.id}',
+-1
+)">
+−
+</button>
+
+
+<input
+id="${seccion}-${p.id}"
+class="cantidad"
+type="number"
+min="1"
+inputmode="numeric"
+onchange="
+cantidadManual(
+'${seccion}',
+'${p.id}',
+this.value
+)">
+
+
+<button
+class="mas"
+onclick="
+cambiarCantidad(
+'${seccion}',
+'${p.id}',
+1
+)">
++
+</button>
+
+</div>
+
+</div>
+
+`;
+
+
+document
+.getElementById(destinos[seccion])
+.appendChild(div);
+
+
+});
+
+});
+
+}
+
+
+
+/* ================= CANTIDADES ================= */
+
+
+function cambiarCantidad(
+seccion,
+id,
+cambio
+){
+
+let cantidad=
+parseInt(
+estado[seccion][id].cantidad
+)||0;
+
+
+cantidad+=cambio;
+
+
+if(cantidad<0)
+cantidad=0;
+
+
+estado[seccion][id].cantidad=
+cantidad===0
+?""
+:String(cantidad);
+
+
+actualizarProducto(
+seccion,
+id
+);
+
+
+actualizarResumen(
+seccion
+);
+
+}
+
+
+
+function cantidadManual(
+seccion,
+id,
+valor
+){
+
+let cantidad=
+parseInt(valor);
+
+
+if(
+isNaN(cantidad)
+||
+cantidad<=0
+){
+
+estado[seccion][id].cantidad="";
+
+}else{
+
+estado[seccion][id].cantidad=
+String(cantidad);
+
+}
+
+
+actualizarProducto(
+seccion,
+id
+);
+
+
+actualizarResumen(
+seccion
+);
+
+}
+
+
+
+/* ================= OPCIONES ================= */
+
+
+function actualizarProducto(
+seccion,
+id
+){
+
+const datos=
+estado[seccion][id];
+
+
+const input=
+document.getElementById(
+`${seccion}-${id}`
+);
+
+
+if(input)
+input.value=
+datos.cantidad;
+
+
+const opciones=
+document.getElementById(
+`${seccion}-${id}-opciones`
+);
+
+
+if(opciones){
+
+if(
+parseInt(datos.cantidad)>0
+){
+
+opciones.style.display="flex";
+
+}else{
+
+opciones.style.display="none";
+
+datos.harina=false;
+datos.sc=false;
+datos.sceb=false;
+
+}
+
+}
+
+
+actualizarBotones(
+seccion,
+id
+);
+
+}
+
+
+
+function seleccionarHarina(
+seccion,
+id
+){
+
+estado[seccion][id].harina=
+!estado[seccion][id].harina;
+
+
+actualizarBotones(
+seccion,
+id
+);
+
+
+actualizarResumen(
+seccion
+);
+
+}
+
+
+
+function seleccionarVerdura(
+seccion,
+id,
+opcion
+){
+
+const datos=
+estado[seccion][id];
+
+
+if(opcion==="sc")
+datos.sc=!datos.sc;
+
+
+if(opcion==="sceb")
+datos.sceb=!datos.sceb;
+
+
+actualizarBotones(
+seccion,
+id
+);
+
+
+actualizarResumen(
+seccion
+);
+
+}
+
+
+
+function seleccionarSinVerdura(
+seccion,
+id
+){
+
+const datos=
+estado[seccion][id];
+
+
+const activar=
+!(datos.sc&&datos.sceb);
+
+
+datos.sc=activar;
+datos.sceb=activar;
+
+
+actualizarBotones(
+seccion,
+id
+);
+
+
+actualizarResumen(
+seccion
+);
+
+}
+
+
+
+function actualizarBotones(
+seccion,
+id
+){
+
+const datos=
+estado[seccion][id];
+
+
+["harina","sc","sceb"]
+.forEach(opcion=>{
+
+const boton=
+document.getElementById(
+`${seccion}-${id}-${opcion}`
+);
+
+
+if(boton){
+
+boton.classList.toggle(
+"activo",
+datos[opcion]
+);
+
+}
+
+});
+
+
+const sv=
+document.getElementById(
+`${seccion}-${id}-sv`
+);
+
+
+if(sv){
+
+sv.classList.toggle(
+"activo",
+datos.sc &&
+datos.sceb
+);
+
+}
+
+}
+
+
+
+/* ================= RESUMEN ================= */
+
+
+function actualizarResumen(
+seccion
+){
+
+let html="";
+let hay=false;
+
+
+productos.forEach(p=>{
+
+const datos=
+estado[seccion][p.id];
+
+
+const cantidad=
+parseInt(datos.cantidad)||0;
+
+
+if(cantidad>0){
+
+hay=true;
+
+
+let extras=[];
+
+
+if(datos.harina)
+extras.push("harina");
+
+
+if(
+datos.sc &&
+datos.sceb
+){
+
+extras.push("s/v");
+
+}else{
+
+if(datos.sc)
+extras.push("s/c");
+
+if(datos.sceb)
+extras.push("s/ceb");
+
+}
+
+
+html+=`
+
+<div class="resumen-linea">
+
+${cantidad}
+${p.nombre}
+
+${extras.length
+?" — "+extras.join(" — ")
+:""}
+
+</div>
+
+`;
+
+}
+
+});
+
+
+bebidas.forEach(p=>{
+
+const cantidad=
+parseInt(
+estado[seccion][p.id].cantidad
+)||0;
+
+
+if(cantidad>0){
+
+hay=true;
+
+
+html+=`
+
+<div class="resumen-linea">
+
+${cantidad}
+${p.nombre}
+
+</div>
+
+`;
+
+}
+
+});
+
+
+const destino=
+seccion==="aqui"
+?"resumenAqui"
+:seccion==="llevar"
+?"resumenLlevar"
+:"resumenPedido";
+
+
+document
+.getElementById(destino)
+.innerHTML=
+hay
+?html
+:"todavía no hay productos.";
+
+}
+
+
+
+/* ================= ACTUALIZAR ================= */
+
+
+function actualizarTodo(
+seccion
+){
+
+productos.forEach(p=>{
+
+actualizarProducto(
+seccion,
+p.id
+);
+
+});
+
+
+bebidas.forEach(p=>{
+
+actualizarProducto(
+seccion,
+p.id
+);
+
+});
+
+
+actualizarResumen(
+seccion
+);
+
+}
+
+
+
+/* ================= VACIAR ================= */
+
+
+function vaciar(
+seccion
+){
+
+productos.forEach(p=>{
+
+estado[seccion][p.id]={
+
+cantidad:"",
+harina:false,
+sc:false,
+sceb:false
+
+};
+
+});
+
+
+bebidas.forEach(p=>{
+
+estado[seccion][p.id]={
+
+cantidad:""
+
+};
+
+});
+
+
+if(seccion==="aqui"){
+
+document
+.getElementById("mesa")
+.value="";
+
+}
+
+
+if(seccion==="pedido"){
+
+document
+.getElementById("domicilio")
+.value="";
+
+}
+
+
+actualizarTodo(
+seccion
+);
+
+
+mostrarMensaje(
+seccion,
+"pedido vaciado."
+);
+
+}
+
+
+
+/* ================= MENSAJES ================= */
+
+
+function mostrarMensaje(
+seccion,
+texto
+){
+
+const id=
+seccion==="aqui"
+?"mensajeAqui"
+:seccion==="llevar"
+?"mensajeLlevar"
+:"mensajePedido";
+
+
+const mensaje=
+document.getElementById(id);
+
+
+mensaje.textContent=texto;
+
+
+setTimeout(()=>{
+
+mensaje.textContent="";
+
+},1500);
+
+}
+
+
+
+/* ================= NÚMERO PEDIDO ================= */
+
+
+function obtenerNumeroPedido(){
+
+let numero=
+parseInt(
+localStorage.getItem(
+"taconazo_ultimo_pedido"
+)
+)||0;
+
+
+numero++;
+
+
+localStorage.setItem(
+"taconazo_ultimo_pedido",
+numero
+);
+
+
+return numero;
+
+}
+
+
+
+/* ================= MANDAR ================= */
+
+
+function mandar(
+seccion
+){
+
+let hay=false;
+
+
+[...productos,...bebidas]
+.forEach(p=>{
+
+if(
+parseInt(
+estado[seccion][p.id].cantidad
+)>0
+){
+
+hay=true;
+
+}
+
+});
+
+
+if(!hay){
+
+mostrarMensaje(
+seccion,
+"agrega un producto."
+);
+
+return;
+
+}
+
+
+let mesa="";
+
+let domicilio="";
+
+
+if(seccion==="aqui"){
+
+mesa=
+document
+.getElementById("mesa")
+.value
+.trim();
+
+
+if(!mesa){
+
+mostrarMensaje(
+seccion,
+"falta la mesa."
+);
+
+return;
+
+}
+
+}
+
+
+if(seccion==="pedido"){
+
+domicilio=
+document
+.getElementById("domicilio")
+.value
+.trim();
+
+
+if(!domicilio){
+
+mostrarMensaje(
+seccion,
+"falta el domicilio."
+);
+
+return;
+
+}
+
+}
+
+
+/* CREAR PEDIDO */
+
+const pedido={
+
+numero:obtenerNumeroPedido(),
+
+tipo:seccion,
+
+mesa:mesa,
+
+domicilio:domicilio,
+
+hora:new Date()
+.toLocaleString("es-MX"),
+
+productos:[]
+
+};
+
+
+productos.forEach(p=>{
+
+const datos=
+estado[seccion][p.id];
+
+
+const cantidad=
+parseInt(datos.cantidad)||0;
+
+
+if(cantidad>0){
+
+pedido.productos.push({
+
+nombre:p.nombre,
+
+cantidad:cantidad,
+
+harina:datos.harina,
+
+sc:datos.sc,
+
+sceb:datos.sceb
+
+});
+
+}
+
+});
+
+
+bebidas.forEach(p=>{
+
+const cantidad=
+parseInt(
+estado[seccion][p.id].cantidad
+)||0;
+
+
+if(cantidad>0){
+
+pedido.productos.push({
+
+nombre:p.nombre,
+
+cantidad:cantidad
+
+});
+
+}
+
+});
+
+
+/* GUARDAR HISTORIAL */
+
+let historial=
+JSON.parse(
+localStorage.getItem(
+"taconazo_historial"
+)
+)||[];
+
+
+historial.push(pedido);
+
+
+localStorage.setItem(
+"taconazo_historial",
+JSON.stringify(historial)
+);
+
+
+mostrarMensaje(
+seccion,
+"pedido #"+
+String(pedido.numero)
+.padStart(2,"0")+
+" enviado."
+);
+
+
+/* VACIAR PEDIDO */
+
+setTimeout(()=>{
+
+vaciar(
+seccion
+);
+
+},700);
+
+}
+
+
+
+/* ================= HISTORIAL ================= */
+
+
+function mostrarHistorial(){
+
+const contenedor=
+document.getElementById(
+"listaHistorial"
+);
+
+
+let historial=
+JSON.parse(
+localStorage.getItem(
+"taconazo_historial"
+)
+)||[];
+
+
+if(historial.length===0){
+
+contenedor.innerHTML=`
+
+<div class="vacio">
+
+no hay pedidos todavía.
+
+</div>
+
+`;
+
+return;
+
+}
+
+
+let html="";
+
+
+[...historial]
+.reverse()
+.forEach(pedido=>{
+
+
+let productosHtml="";
+
+
+pedido.productos
+.forEach(p=>{
+
+let extras=[];
+
+
+if(p.harina)
+extras.push("harina");
+
+
+if(
+p.sc &&
+p.sceb
+){
+
+extras.push("s/v");
+
+}else{
+
+if(p.sc)
+extras.push("s/c");
+
+if(p.sceb)
+extras.push("s/ceb");
+
+}
+
+
+productosHtml+=`
+
+<div>
+
+${p.cantidad}
+${p.nombre}
+
+${extras.length
+?" — "+extras.join(" — ")
+:""}
+
+</div>
+
+`;
+
+});
+
+
+let lugar="";
+
+
+if(pedido.tipo==="aqui")
+lugar="Mesa "+pedido.mesa;
+
+
+if(pedido.tipo==="pedido")
+lugar=
+"Domicilio: "+
+pedido.domicilio;
+
+
+if(pedido.tipo==="llevar")
+lugar="Para llevar";
+
+
+html+=`
+
+<div class="historial-item">
+
+<div class="historial-cabeza">
+
+<div class="numero-pedido">
+
+#${String(
+pedido.numero
+).padStart(2,"0")}
+
+</div>
+
+<div class="tipo-pedido">
+
+${pedido.tipo}
+
+</div>
+
+</div>
+
+
+<div class="dato-historial">
+
+${lugar}
+
+</div>
+
+
+<div class="dato-historial">
+
+${pedido.hora}
+
+</div>
+
+
+<div class="productos-historial">
+
+${productosHtml}
+
+</div>
+
+</div>
+
+`;
+
+});
+
+
+contenedor.innerHTML=html;
+
+}
+
+
+
+/* ================= BORRAR PEDIDOS ================= */
+
+
+function borrarPedidos(){
+
+const confirmar=
+confirm(
+"¿Seguro que quieres borrar todos los pedidos del historial?"
+);
+
+
+if(!confirmar)
+return;
+
+
+localStorage.removeItem(
+"taconazo_historial"
+);
+
+
+mostrarHistorial();
+
+}
+
+
+
+/* ================= BORRAR TV ================= */
+
+
+function borrarHistorialTV(){
+
+const confirmar=
+confirm(
+"¿Borrar el historial guardado en esta TV?"
+);
+
+
+if(!confirmar)
+return;
+
+
+localStorage.removeItem(
+"taconazo_historial"
+);
+
+
+mostrarHistorial();
+
+}
+
+
+
+/* ================= BORRAR TELÉFONO ================= */
+
+
+function borrarHistorialTelefono(){
+
+const confirmar=
+confirm(
+"¿Borrar el historial del teléfono?"
+);
+
+
+if(!confirmar)
+return;
+
+
+localStorage.removeItem(
+"taconazo_historial"
+);
+
+
+mostrarHistorial();
+
+}
+
+
+
+/* ================= INICIO ================= */
+
+
+crearProductos();
+
+crearBebidas();
+
+actualizarTodo("aqui");
+
+
+</script>
+
+</body>
+  </html>
